@@ -9,7 +9,7 @@ Als Spieler hätte ich gerne Hintergründe die sich an die momentane Schwierigke
 ## 3. Bewegbares Raumschiff für Spieler
 Als Spieler muss ich die Möglichkeit haben meinen Charakter zu sehen und diesen steuern zu können.
 
-## 4. Raumbegrenzung für Speilermodel
+## 4. Raumbegrenzung für Spielermodel
 Als Developer muss ich verhindern, dass der Spieler das Charaktermodel aus dem sichtbaren Spielbereich bewegen kann damit sichergestellt wird, dass er die Orientierung behält.
 
 ## 5. Angreifen (Spieler)
