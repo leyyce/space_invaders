@@ -21,14 +21,20 @@ public class SpaceInvadersGame extends BasicGame {
 	@Override
     public void initialise() {
         ship = new Ship();
-        for (int x = 30; x < 630; x += 100) {
+        for (int x = 30; x < 1366; x += 100) {
             enemies.add(new Alien(x, 30));
+        }
+        for (int x = 30; x < 1366; x += 100) {
+            enemies.add(new Alien(x, 30 + 20 + enemies.get(0).getRegionHeight() * 2));
         }
     }
     
     @Override
     public void update(float delta) {
 	    reactToKeyPresses(delta);
+        for (Alien alien: enemies) {
+            alien.move(5);
+        }
     }
     
     @Override
@@ -48,6 +54,8 @@ public class SpaceInvadersGame extends BasicGame {
     }
 
     private void reactToKeyPresses(float delta) {
+	    if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
+	        Gdx.graphics.setWindowedMode(640, 480);
 	    if (Gdx.input.isKeyPressed(Input.Keys.UP))
 	        ship.moveVert(-5);
 	    else if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
