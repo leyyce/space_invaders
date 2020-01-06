@@ -22,9 +22,11 @@ public class SpaceInvadersGame extends BasicGame {
         ship = new Ship();
         for (int x = 30; x < 1366; x += 100) {
             enemies.add(new Alien(x, 30));
+            System.out.println(x);
         }
         for (int x = 30; x < 1366; x += 100) {
-            enemies.add(new Alien(x, 30 + 20 + enemies.get(0).getRegionHeight() * 2));
+            enemies.add(new Alien(x, 30 + 20 + enemies.get(0).getAlienTexture().getHeight() * 2));
+            System.out.println(x);
         }
     }
     
@@ -33,13 +35,16 @@ public class SpaceInvadersGame extends BasicGame {
 	    reactToKeyPresses();
         ship.update(delta);
         for (Alien alien: enemies) {
-            alien.move(5);
+            alien.update(delta);
         }
     }
     
     @Override
     public void interpolate(float alpha) {
 	    ship.interpolate(alpha);
+        for (Alien a : enemies) {
+            a.interpolate(alpha);
+        }
     }
     
     @Override
@@ -48,7 +53,7 @@ public class SpaceInvadersGame extends BasicGame {
         s.begin();
         ship.render(g);
         for (Alien a : enemies) {
-            g.drawSprite(a);
+            a.render(g);
         }
         s.end();
     }
@@ -56,10 +61,12 @@ public class SpaceInvadersGame extends BasicGame {
     private void reactToKeyPresses() {
 	    if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
 	        Gdx.graphics.setWindowedMode(640, 480);
+	    /* REMOVED BECAUSE YOU'RE ONLY SUPPOSED TO MOVE LEFT AND RIGHT
 	    if (Gdx.input.isKeyPressed(Input.Keys.UP))
 	        ship.moveVert(-5);
 	    if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
 	        ship.moveVert(5);
+	     */
 	    if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
 	        ship.moveHor(-5);
 	    if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))

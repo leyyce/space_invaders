@@ -7,29 +7,34 @@ import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.core.graphics.SpriteSheet;
 
+import java.awt.*;
+
 public class Ship {
     private CollisionBox collisionBox;
     private Animation<Sprite> shipAnimation = new Animation<Sprite>();
 
     public Ship() {
+        int sheetFrameDimension = 108;
+
         Texture shipTextures = new Texture("ship.png");
-        SpriteSheet sheet = new SpriteSheet(shipTextures, 108, 108);
-        collisionBox = new CollisionBox(15f, 15f, 108f, 108f);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        SpriteSheet sheet = new SpriteSheet(shipTextures, sheetFrameDimension, sheetFrameDimension);
+        collisionBox = new CollisionBox((float) screenSize.width / 2 - sheetFrameDimension / 2f, screenSize.height - 20 - sheetFrameDimension, 108f, 108f);
         for (int i = 0; i < sheet.getTotalFrames(); i++) {
             shipAnimation.addFrame(sheet.getSprite(i), 0.2f);
         }
         shipAnimation.setLooping(true);
     }
 
-    public void moveHor(int xStep) {
-        collisionBox.setX(collisionBox.getRenderX() + xStep);
+    public void moveHor(float xStep) {
+        collisionBox.setX(collisionBox.getX() + xStep);
     }
 
-    public void moveVert(int yStep) {
-        collisionBox.setY(collisionBox.getRenderY() + yStep);
+    public void moveVert(float yStep) {
+        collisionBox.setY(collisionBox.getY() + yStep);
     }
 
-    public void move(int xStep, int yStep) {
+    public void move(float xStep, float yStep) {
         this.moveHor(xStep);
         this.moveVert(yStep);
     }
@@ -49,6 +54,6 @@ public class Ship {
 
     public void render(Graphics g) {
         //Use the point's render coordinates to draw the sprite
-        g.drawSprite(shipAnimation.getCurrentFrame(), collisionBox.getX(), collisionBox.getY());
+        g.drawSprite(shipAnimation.getCurrentFrame(), collisionBox.getRenderX(), collisionBox.getRenderY());
     }
 }
