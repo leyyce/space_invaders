@@ -4,21 +4,25 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.mini2Dx.core.game.BasicGame;
 import org.mini2Dx.core.graphics.Graphics;
 
 import com.code_connoisseure.space_invaders.enteties.Alien;
 import com.code_connoisseure.space_invaders.enteties.Ship;
+import org.mini2Dx.core.graphics.Sprite;
 
 public class SpaceInvadersGame extends BasicGame {
 	public static final String GAME_IDENTIFIER = "com.code_connoisseure.space_invaders";
 
+	private Sprite backdrop;
     private Ship ship;
     private ArrayList<Alien> enemies = new ArrayList<Alien>();
 	
 	@Override
     public void initialise() {
+        backdrop = new Sprite(new Texture("Backdrop.png"));
         ship = new Ship();
         for (int x = 30; x < Gdx.graphics.getWidth(); x += 100) {
             enemies.add(new Alien(x, 30));
@@ -51,6 +55,7 @@ public class SpaceInvadersGame extends BasicGame {
     public void render(Graphics g) {
         SpriteBatch s = new SpriteBatch();
         s.begin();
+        g.drawSprite(backdrop);
         ship.render(g);
         for (Alien a : enemies) {
             a.render(g);
