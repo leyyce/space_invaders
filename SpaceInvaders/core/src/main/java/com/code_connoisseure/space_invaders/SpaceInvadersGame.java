@@ -20,11 +20,11 @@ public class SpaceInvadersGame extends BasicGame {
 	@Override
     public void initialise() {
         ship = new Ship();
-        for (int x = 30; x < 1366; x += 100) {
+        for (int x = 30; x < Gdx.graphics.getWidth(); x += 100) {
             enemies.add(new Alien(x, 30));
             System.out.println(x);
         }
-        for (int x = 30; x < 1366; x += 100) {
+        for (int x = 30; x < Gdx.graphics.getWidth(); x += 100) {
             enemies.add(new Alien(x, 30 + 20 + enemies.get(0).getAlienTexture().getHeight() * 2));
             System.out.println(x);
         }
