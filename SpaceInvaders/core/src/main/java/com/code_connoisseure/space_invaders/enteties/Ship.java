@@ -12,15 +12,12 @@ import org.mini2Dx.core.graphics.SpriteSheet;
 public class Ship {
     private CollisionBox collisionBox;
     private Animation<Sprite> shipAnimation = new Animation<Sprite>();
+    private int sheetFrameDimension = 108;
 
     public Ship() {
-        int sheetFrameDimension = 108;
-
         Texture shipTextures = new Texture("ship.png");
-        int screenWidth = Gdx.graphics.getWidth();
-        int screenHeight = Gdx.graphics.getHeight();
         SpriteSheet sheet = new SpriteSheet(shipTextures, sheetFrameDimension, sheetFrameDimension);
-        collisionBox = new CollisionBox((float) screenWidth / 2 - sheetFrameDimension / 2f, screenHeight - 20 - sheetFrameDimension, 108f, 108f);
+        collisionBox = new CollisionBox(getCenterPosition()[0], getCenterPosition()[1], sheetFrameDimension, sheetFrameDimension);
         for (int i = 0; i < sheet.getTotalFrames(); i++) {
             shipAnimation.addFrame(sheet.getSprite(i), 0.2f);
         }
@@ -50,6 +47,10 @@ public class Ship {
     public void update(float delta) {
         //preUpdate() must be called before any changes are made to the CollisionPoint
         collisionBox.preUpdate();
+        float y = collisionBox.getX();
+        // Recenter ship if it gets out of bounds
+        if (y < 0 || y + collisionBox.getWidth() > Gdx.graphics.getWidth())
+            collisionBox.set(getCenterPosition()[0], getCenterPosition()[1]);
         shipAnimation.update(delta);
     }
 
@@ -68,5 +69,9 @@ public class Ship {
     private boolean moveInBounds(float xStep) {
         float y = collisionBox.getX();
         return y + xStep > 0 && y + xStep + collisionBox.getWidth() < Gdx.graphics.getWidth();
+    }
+
+    private float[] getCenterPosition() {
+        return new float[]{Gdx.graphics.getWidth() / 2f - sheetFrameDimension / 2f, Gdx.graphics.getHeight() - 20 - sheetFrameDimension};
     }
 }
