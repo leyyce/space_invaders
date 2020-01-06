@@ -15,7 +15,8 @@ public class DesktopLauncher {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		config.width = screenSize.width;
 		config.height = screenSize.height;
-		config.fullscreen = true;
+		config.fullscreen = false;
+		config.targetFPS = 60;
 		new DesktopMini2DxGame(new SpaceInvadersGame(), config);
 	}
 }

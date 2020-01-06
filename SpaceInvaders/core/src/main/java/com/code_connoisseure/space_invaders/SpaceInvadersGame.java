@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.mini2Dx.core.game.BasicGame;
 import org.mini2Dx.core.graphics.Graphics;
@@ -31,7 +30,8 @@ public class SpaceInvadersGame extends BasicGame {
     
     @Override
     public void update(float delta) {
-	    reactToKeyPresses(delta);
+	    reactToKeyPresses();
+        ship.update(delta);
         for (Alien alien: enemies) {
             alien.move(5);
         }
@@ -39,30 +39,30 @@ public class SpaceInvadersGame extends BasicGame {
     
     @Override
     public void interpolate(float alpha) {
-    
+	    ship.interpolate(alpha);
     }
     
     @Override
     public void render(Graphics g) {
         SpriteBatch s = new SpriteBatch();
         s.begin();
-        g.drawSprite(ship);
+        ship.render(g);
         for (Alien a : enemies) {
             g.drawSprite(a);
         }
         s.end();
     }
 
-    private void reactToKeyPresses(float delta) {
+    private void reactToKeyPresses() {
 	    if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
 	        Gdx.graphics.setWindowedMode(640, 480);
 	    if (Gdx.input.isKeyPressed(Input.Keys.UP))
 	        ship.moveVert(-5);
-	    else if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
+	    if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
 	        ship.moveVert(5);
 	    if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
 	        ship.moveHor(-5);
-	    else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+	    if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
 	        ship.moveHor(5);
     }
 }
