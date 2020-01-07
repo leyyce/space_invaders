@@ -34,6 +34,7 @@ public class SpaceInvadersGame extends BasicGame {
     public void update(float delta) {
         checkForHits();
         clearOffScreenProjectiles();
+        clearOffScreenAliens();
         reactToKeyPresses();
         // Update ship
         ship.update(delta);
@@ -141,18 +142,31 @@ public class SpaceInvadersGame extends BasicGame {
         projectiles.removeAll(remove);
     }
 
+    private void clearOffScreenAliens() {
+        ArrayList<Alien> remove;
+        for (ArrayList<Alien> row : enemies) {
+            remove = new ArrayList<Alien>();
+            for (Alien a : row) {
+                if (a.getY() + a.getHeight() < 0)
+                    remove.add(a);
+            }
+            row.removeAll(remove);
+        }
+    }
+
     private void checkForHits() {
-        ArrayList<Alien> aliensToRemove = new ArrayList<Alien>();
+        ArrayList<Alien> aliensToRemove;
         ArrayList<DefaultLaser> projectilesToRemove = new ArrayList<DefaultLaser>();
         for (DefaultLaser p : projectiles) {
             for (ArrayList<Alien> row : enemies) {
+                aliensToRemove = new ArrayList<Alien>();
                 for (Alien a : row) {
                     if (a.contains(p.getCollisionBox())) {
                         projectilesToRemove.add(p);
                         aliensToRemove.add(a);
                     }
                 }
-                enemies.get(enemies.indexOf(row)).removeAll(aliensToRemove);
+                row.removeAll(aliensToRemove);
             }
         }
         projectiles.removeAll(projectilesToRemove);

@@ -17,7 +17,7 @@ public class Alien {
     public Alien(float x, float y) {
         Texture alienTextures = new Texture("alien.png");
         SpriteSheet sheet = new SpriteSheet(alienTextures, 60, 60);
-        collisionBox = new CollisionBox(x, y, alienTextures.getWidth(), alienTextures.getHeight());
+        collisionBox = new CollisionBox(x, y, alienTextures.getWidth() - 25, alienTextures.getHeight() - 25);
         for (int i = 0; i < sheet.getTotalFrames(); i++) {
             alienAnimation.addFrame(sheet.getSprite(i), 0.2f);
         }
@@ -49,6 +49,18 @@ public class Alien {
 
     public boolean contains(Shape shape) {
         return collisionBox.contains(shape);
+    }
+
+    public float getX() {
+        return collisionBox.getX();
+    }
+
+    public float getY() {
+        return collisionBox.getY();
+    }
+
+    public float getHeight() {
+        return collisionBox.getHeight();
     }
 
     private void moveHor(float xStep) {
