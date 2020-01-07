@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.mini2Dx.core.game.BasicGame;
 import org.mini2Dx.core.graphics.Graphics;
 
@@ -82,7 +81,7 @@ public class SpaceInvadersGame extends BasicGame {
         float alienHeight = alien.getAlienTexture().getHeight();
         float shipHeight = ship.getShipTexture().getWidth();
         float availableSpaceX = Gdx.graphics.getWidth() - 2 * alienWidth;
-        float availableSpaceY = Gdx.graphics.getHeight() - 4 * alienHeight - shipHeight;
+        float availableSpaceY = Gdx.graphics.getHeight() - 3 * shipHeight;
         int numberAlienX = (int) Math.floor((availableSpaceX - 2 * alienSpacing) / alienWidth);
         int numberAlienY = (int) Math.floor(availableSpaceY / alienHeight);
 
@@ -101,7 +100,7 @@ public class SpaceInvadersGame extends BasicGame {
         ArrayList<Alien> row = new ArrayList<Alien>();
         for (int i = 0; i < aliensPerRow; i++) {
             row.add(new Alien(alienSpacing * i + alienWidth * i,
-                    2* rowIndex * alienHeight)
+                    2 * rowIndex * alienHeight)
             );
         }
         System.out.println(row.size());
