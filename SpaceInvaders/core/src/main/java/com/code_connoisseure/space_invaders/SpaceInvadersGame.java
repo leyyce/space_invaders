@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.code_connoisseure.space_invaders.enteties.projectiles.DefaultLaser;
+import org.mini2Dx.core.engine.geom.CollisionBox;
 import org.mini2Dx.core.game.BasicGame;
 import org.mini2Dx.core.graphics.Graphics;
 
@@ -31,6 +32,7 @@ public class SpaceInvadersGame extends BasicGame {
 
     @Override
     public void update(float delta) {
+        checkForHits();
         clearOffScreenProjectiles();
         reactToKeyPresses();
         // Update ship
@@ -137,5 +139,22 @@ public class SpaceInvadersGame extends BasicGame {
                 remove.add(p);
         }
         projectiles.removeAll(remove);
+    }
+
+    private void checkForHits() {
+        ArrayList<Alien> aliensToRemove = new ArrayList<Alien>();
+        ArrayList<DefaultLaser> projectilesToRemove = new ArrayList<DefaultLaser>();
+        for (DefaultLaser p : projectiles) {
+            for (ArrayList<Alien> row : enemies) {
+                for (Alien a : row) {
+                    if (a.contains(p.getCollisionBox())) {
+                        projectilesToRemove.add(p);
+                        aliensToRemove.add(a);
+                    }
+                }
+                enemies.get(enemies.indexOf(row)).removeAll(aliensToRemove);
+            }
+        }
+        projectiles.removeAll(projectilesToRemove);
     }
 }

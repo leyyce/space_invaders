@@ -3,6 +3,7 @@ package com.code_connoisseure.space_invaders.enteties;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import org.mini2Dx.core.engine.geom.CollisionBox;
+import org.mini2Dx.core.geom.Shape;
 import org.mini2Dx.core.graphics.Animation;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.Sprite;
@@ -44,6 +45,10 @@ public class Alien {
 
     public Texture getAlienTexture() {
         return alienAnimation.getCurrentFrame().getTexture();
+    }
+
+    public boolean contains(Shape shape) {
+        return collisionBox.contains(shape);
     }
 
     private void moveHor(float xStep) {

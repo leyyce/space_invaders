@@ -58,6 +58,10 @@ public class DefaultLaser {
         return collisionBox.getHeight();
     }
 
+    public CollisionBox getCollisionBox() {
+        return collisionBox;
+    }
+
     public static int getSheetFrameWidth() {
         return sheetFrameWidth;
     }
