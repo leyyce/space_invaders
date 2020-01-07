@@ -13,7 +13,7 @@ public class DesktopLauncher {
 		DesktopMini2DxConfig config = new DesktopMini2DxConfig(SpaceInvadersGame.GAME_IDENTIFIER);
 		config.vSyncEnabled = true;
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		config.fullscreen = false;
+		config.fullscreen = true;
 		config.width = config.fullscreen ? screenSize.width : screenSize.width - 100;
 		config.height = config.fullscreen ? screenSize.height : screenSize.height - 100;
 		config.targetFPS = 60;

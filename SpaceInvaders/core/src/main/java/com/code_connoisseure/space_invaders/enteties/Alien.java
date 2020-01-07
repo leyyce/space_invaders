@@ -9,26 +9,25 @@ import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.core.graphics.SpriteSheet;
 
 public class Alien {
-    private Texture alienTexture = new Texture("test_alien.png");
-    private Sprite alienSprite = new Sprite(alienTexture);
     private CollisionBox collisionBox;
     private Animation<Sprite> alienAnimation = new Animation<Sprite>();
     private boolean moveRight = true;
 
     public Alien(float x, float y) {
-        // SpriteSheet sheet = new SpriteSheet(alienTextures, 108, 108);
-        collisionBox = new CollisionBox(x, y, alienTexture.getWidth(), alienTexture.getHeight());
-        // for (int i = 0; i < sheet.getTotalFrames(); i++) {
-        //     alienAnimation.addFrame(sheet.getSprite(i), 0.2f);
-        // }
-        // alienAnimation.setLooping(true);
+        Texture alienTextures = new Texture("alien.png");
+        SpriteSheet sheet = new SpriteSheet(alienTextures, 60, 60);
+        collisionBox = new CollisionBox(x, y, alienTextures.getWidth(), alienTextures.getHeight());
+        for (int i = 0; i < sheet.getTotalFrames(); i++) {
+            alienAnimation.addFrame(sheet.getSprite(i), 0.2f);
+        }
+        alienAnimation.setLooping(true);
     }
 
     public void update(float delta) {
         //preUpdate() must be called before any changes are made to the CollisionPoint
         collisionBox.preUpdate();
         move(5);
-        // alienAnimation.update(delta);
+        alienAnimation.update(delta);
     }
 
     public void interpolate(float alpha) {
@@ -40,11 +39,11 @@ public class Alien {
 
     public void render(Graphics g) {
         //Use the point's render coordinates to draw the sprite
-        g.drawSprite(alienSprite, collisionBox.getRenderX(), collisionBox.getRenderY());
+        g.drawSprite(alienAnimation.getCurrentFrame(), collisionBox.getRenderX(), collisionBox.getRenderY());
     }
 
     public Texture getAlienTexture() {
-        return alienTexture;
+        return alienAnimation.getCurrentFrame().getTexture();
     }
 
     private void moveHor(float xStep) {
@@ -56,9 +55,9 @@ public class Alien {
     }
 
     private void move(float xStep) {
-        if (checkEdgeCollision(this.moveRight ? collisionBox.getX() + xStep + alienTexture.getWidth() : collisionBox.getX() - xStep)) {
+        if (checkEdgeCollision(this.moveRight ? collisionBox.getX() + xStep + getAlienTexture().getWidth() / 2f: collisionBox.getX() - xStep)) {
             this.moveRight = !moveRight;
-            moveVert(alienTexture.getHeight() + 10);
+            moveVert(getAlienTexture().getHeight());
         }
         moveHor(this.moveRight ? xStep : - xStep);
     }
@@ -67,4 +66,3 @@ public class Alien {
         return !(position < Gdx.graphics.getWidth() && position > 0);
     }
 }
-
