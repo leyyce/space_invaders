@@ -16,7 +16,6 @@ public class Ship {
     private CollisionBox collisionBox;
     private Animation<Sprite> shipAnimation = new Animation<Sprite>();
     private int sheetFrameDimension = 108;
-    private ArrayList<DefaultLaser> projectiles;
 
     public Ship() {
         Texture shipTextures = new Texture("ship.png");
@@ -26,8 +25,6 @@ public class Ship {
             shipAnimation.addFrame(sheet.getSprite(i), 0.2f);
         }
         shipAnimation.setLooping(true);
-
-        projectiles = new ArrayList<DefaultLaser>();
     }
 
     public boolean moveHor(float xStep) {
@@ -50,14 +47,11 @@ public class Ship {
         return false;
     }
 
-    public void shoot() {
+    public void shoot(ArrayList<DefaultLaser> projectiles) {
         projectiles.add(new DefaultLaser(collisionBox.getCenterX() - DefaultLaser.getSheetFrameWidth() / 2f, collisionBox.getY()));
     }
 
     public void update(float delta) {
-        // Remove projectiles that are of screen.
-        clearOffScreenProjectiles();
-
         //preUpdate() must be called before any changes are made to the CollisionPoint
         collisionBox.preUpdate();
         // Recenter ship if it gets out of bounds
@@ -65,11 +59,6 @@ public class Ship {
             collisionBox.set(getCenterPosition()[0], getCenterPosition()[1]);
         }
         shipAnimation.update(delta);
-
-        // Update projectiles
-        for (DefaultLaser p : projectiles) {
-            p.update(delta);
-        }
     }
 
     public void interpolate(float alpha) {
@@ -77,21 +66,11 @@ public class Ship {
         //to interpolate between the previous and current positions
         //and set the render coordinates correctly
         collisionBox.interpolate(null, alpha);
-
-        // Interpolate projectiles
-        for (DefaultLaser p : projectiles) {
-            p.interpolate(alpha);
-        }
     }
 
     public void render(Graphics g) {
         //Use the point's render coordinates to draw the sprite
         g.drawSprite(shipAnimation.getCurrentFrame(), collisionBox.getRenderX(), collisionBox.getRenderY());
-
-        // Render projectiles
-        for (DefaultLaser p : projectiles) {
-            p.render(g);
-        }
     }
 
     private boolean moveInBounds(float xStep) {
@@ -105,15 +84,6 @@ public class Ship {
 
     public Texture getShipTexture() {
         return shipAnimation.getCurrentFrame().getTexture();
-    }
-
-    private void clearOffScreenProjectiles() {
-        ArrayList<DefaultLaser> remove = new ArrayList<DefaultLaser>();
-        for (DefaultLaser p : projectiles) {
-            if (p.getY() + p.getHeight() < 0)
-                remove.add(p);
-        }
-        projectiles.removeAll(remove);
     }
 
     private boolean shipInBounds() {
