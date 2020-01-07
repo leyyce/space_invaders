@@ -71,6 +71,8 @@ public class SpaceInvadersGame extends BasicGame {
             ship.moveHor(-5);
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
             ship.moveHor(5);
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
+            ship.shoot();
     }
 
     private ArrayList<ArrayList<Alien>> generateAliens() {
@@ -103,7 +105,6 @@ public class SpaceInvadersGame extends BasicGame {
                     2 * rowIndex * alienHeight)
             );
         }
-        System.out.println(row.size());
         return row;
     }
 }
