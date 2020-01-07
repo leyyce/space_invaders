@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
+import com.code_connoisseure.space_invaders.enteties.projectiles.DefaultLaser;
+import org.mini2Dx.core.engine.geom.CollisionBox;
 import org.mini2Dx.core.game.BasicGame;
 import org.mini2Dx.core.graphics.Graphics;
 
@@ -18,18 +20,29 @@ public class SpaceInvadersGame extends BasicGame {
     private Sprite backdrop;
     private Ship ship;
     private ArrayList<ArrayList<Alien>> enemies;
+    private ArrayList<DefaultLaser> projectiles;
 
     @Override
     public void initialise() {
-        backdrop = new Sprite(new Texture("Backdrop.png"));
+        backdrop = new Sprite(new Texture("backdrop.png"));
         ship = new Ship();
         enemies = generateAliens();
+        projectiles = new ArrayList<DefaultLaser>();
     }
 
     @Override
     public void update(float delta) {
+        checkForHits();
+        clearOffScreenProjectiles();
+        clearOffScreenAliens();
         reactToKeyPresses();
+        // Update ship
         ship.update(delta);
+        // Update projectiles
+        for (DefaultLaser p : projectiles) {
+            p.update(delta);
+        }
+        // Update enemies
         for (ArrayList<Alien> row: enemies) {
             for(Alien alien: row) {
                 alien.update(delta);
@@ -39,7 +52,13 @@ public class SpaceInvadersGame extends BasicGame {
 
     @Override
     public void interpolate(float alpha) {
+        // Interpolate ship
         ship.interpolate(alpha);
+        // Interpolate projectiles
+        for (DefaultLaser p : projectiles) {
+            p.interpolate(alpha);
+        }
+        // Interpolate enemies
         for (ArrayList<Alien> row : enemies) {
             for(Alien alien: row) {
                 alien.interpolate(alpha);
@@ -50,7 +69,13 @@ public class SpaceInvadersGame extends BasicGame {
     @Override
     public void render(Graphics g) {
         g.drawSprite(backdrop);
+        // Render ship
         ship.render(g);
+        // Render projectiles
+        for (DefaultLaser p : projectiles) {
+            p.render(g);
+        }
+        // Render enemies
         for (ArrayList<Alien> row : enemies) {
             for(Alien alien: row){
                 alien.render(g);
@@ -71,6 +96,8 @@ public class SpaceInvadersGame extends BasicGame {
             ship.moveHor(-5);
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
             ship.moveHor(5);
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
+            ship.shoot(projectiles);
     }
 
     private ArrayList<ArrayList<Alien>> generateAliens() {
@@ -103,7 +130,45 @@ public class SpaceInvadersGame extends BasicGame {
                     2 * rowIndex * alienHeight)
             );
         }
-        System.out.println(row.size());
         return row;
+    }
+
+    private void clearOffScreenProjectiles() {
+        ArrayList<DefaultLaser> remove = new ArrayList<DefaultLaser>();
+        for (DefaultLaser p : projectiles) {
+            if (p.getY() + p.getHeight() < 0)
+                remove.add(p);
+        }
+        projectiles.removeAll(remove);
+    }
+
+    private void clearOffScreenAliens() {
+        ArrayList<Alien> remove;
+        for (ArrayList<Alien> row : enemies) {
+            remove = new ArrayList<Alien>();
+            for (Alien a : row) {
+                if (a.getY() + a.getHeight() < 0)
+                    remove.add(a);
+            }
+            row.removeAll(remove);
+        }
+    }
+
+    private void checkForHits() {
+        ArrayList<Alien> aliensToRemove;
+        ArrayList<DefaultLaser> projectilesToRemove = new ArrayList<DefaultLaser>();
+        for (DefaultLaser p : projectiles) {
+            for (ArrayList<Alien> row : enemies) {
+                aliensToRemove = new ArrayList<Alien>();
+                for (Alien a : row) {
+                    if (a.contains(p.getCollisionBox())) {
+                        projectilesToRemove.add(p);
+                        aliensToRemove.add(a);
+                    }
+                }
+                row.removeAll(aliensToRemove);
+            }
+        }
+        projectiles.removeAll(projectilesToRemove);
     }
 }

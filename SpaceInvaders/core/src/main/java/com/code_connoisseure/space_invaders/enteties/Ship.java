@@ -2,11 +2,14 @@ package com.code_connoisseure.space_invaders.enteties;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.code_connoisseure.space_invaders.enteties.projectiles.DefaultLaser;
 import org.mini2Dx.core.engine.geom.CollisionBox;
 import org.mini2Dx.core.graphics.Animation;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.core.graphics.SpriteSheet;
+
+import java.util.ArrayList;
 
 
 public class Ship {
@@ -44,13 +47,17 @@ public class Ship {
         return false;
     }
 
+    public void shoot(ArrayList<DefaultLaser> projectiles) {
+        projectiles.add(new DefaultLaser(collisionBox.getCenterX() - DefaultLaser.getSheetFrameWidth() / 2f, collisionBox.getY()));
+    }
+
     public void update(float delta) {
         //preUpdate() must be called before any changes are made to the CollisionPoint
         collisionBox.preUpdate();
-        float y = collisionBox.getX();
         // Recenter ship if it gets out of bounds
-        if (y < 0 || y + collisionBox.getWidth() > Gdx.graphics.getWidth())
+        if (!shipInBounds()) {
             collisionBox.set(getCenterPosition()[0], getCenterPosition()[1]);
+        }
         shipAnimation.update(delta);
     }
 
@@ -77,5 +84,9 @@ public class Ship {
 
     public Texture getShipTexture() {
         return shipAnimation.getCurrentFrame().getTexture();
+    }
+
+    private boolean shipInBounds() {
+        return moveInBounds(0) && collisionBox.getY() == getCenterPosition()[1];
     }
 }
