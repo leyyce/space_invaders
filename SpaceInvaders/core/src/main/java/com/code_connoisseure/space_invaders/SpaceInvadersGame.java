@@ -21,7 +21,7 @@ public class SpaceInvadersGame extends BasicGame {
 
     @Override
     public void initialise() {
-        backdrop = new Sprite(new Texture("Backdrop.png"));
+        backdrop = new Sprite(new Texture("backdrop.png"));
         ship = new Ship();
         enemies = generateAliens();
     }
