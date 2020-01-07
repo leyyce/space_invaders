@@ -60,10 +60,10 @@ public class Ship {
 
         //preUpdate() must be called before any changes are made to the CollisionPoint
         collisionBox.preUpdate();
-        float y = collisionBox.getX();
         // Recenter ship if it gets out of bounds
-        if (y < 0 || y + collisionBox.getWidth() > Gdx.graphics.getWidth())
+        if (!shipInBounds()) {
             collisionBox.set(getCenterPosition()[0], getCenterPosition()[1]);
+        }
         shipAnimation.update(delta);
 
         // Update projectiles
@@ -114,5 +114,9 @@ public class Ship {
                 remove.add(p);
         }
         projectiles.removeAll(remove);
+    }
+
+    private boolean shipInBounds() {
+        return moveInBounds(0) && collisionBox.getY() == getCenterPosition()[1];
     }
 }
