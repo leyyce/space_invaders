@@ -74,4 +74,8 @@ public class Ship {
     private float[] getCenterPosition() {
         return new float[]{Gdx.graphics.getWidth() / 2f - sheetFrameDimension / 2f, Gdx.graphics.getHeight() - 20 - sheetFrameDimension};
     }
+
+    public Texture getShipTexture() {
+        return shipAnimation.getCurrentFrame().getTexture();
+    }
 }
