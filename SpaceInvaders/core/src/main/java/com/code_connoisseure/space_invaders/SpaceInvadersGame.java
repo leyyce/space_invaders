@@ -36,6 +36,17 @@ public class SpaceInvadersGame extends BasicGame {
         clearOffScreenProjectiles();
         clearOffScreenAliens();
         reactToKeyPresses();
+        // FOR TESTING ONLY: Make aliens respawn if all are cleared
+        boolean allRowsEmpty = true;
+        for (ArrayList<Alien> row : enemies) {
+            if (row.size() != 0) {
+                allRowsEmpty = false;
+                break;
+            }
+        }
+        if (allRowsEmpty)
+            enemies = generateAliens();
+        // ----------------------------------------------------------
         // Update ship
         ship.update(delta);
         // Update projectiles
@@ -147,7 +158,7 @@ public class SpaceInvadersGame extends BasicGame {
         for (ArrayList<Alien> row : enemies) {
             remove = new ArrayList<Alien>();
             for (Alien a : row) {
-                if (a.getY() + a.getHeight() < 0)
+                if (a.getY() >= Gdx.graphics.getHeight())
                     remove.add(a);
             }
             row.removeAll(remove);
