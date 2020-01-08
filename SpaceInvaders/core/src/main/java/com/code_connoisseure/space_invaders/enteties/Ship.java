@@ -3,6 +3,7 @@ package com.code_connoisseure.space_invaders.enteties;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.code_connoisseure.space_invaders.enteties.projectiles.DefaultLaser;
+import com.code_connoisseure.space_invaders.enteties.projectiles.Projectile;
 import org.mini2Dx.core.engine.geom.CollisionBox;
 import org.mini2Dx.core.graphics.Animation;
 import org.mini2Dx.core.graphics.Graphics;
@@ -48,8 +49,8 @@ public class Ship {
         return false;
     }
 
-    public void shoot(ArrayList<DefaultLaser> projectiles) {
-        projectiles.add(new DefaultLaser(collisionBox.getCenterX() - DefaultLaser.getSheetFrameWidth() / 2f, collisionBox.getY()));
+    public void shoot(ArrayList<Projectile> projectiles, float speed) {
+        projectiles.add(new DefaultLaser(collisionBox.getCenterX(), collisionBox.getY(), speed));
     }
 
     public void update(float delta) {

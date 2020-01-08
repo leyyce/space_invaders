@@ -6,8 +6,7 @@ import java.util.Random;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
-import com.code_connoisseure.space_invaders.enteties.projectiles.Bomb;
-import com.code_connoisseure.space_invaders.enteties.projectiles.DefaultLaser;
+import com.code_connoisseure.space_invaders.enteties.projectiles.Projectile;
 import org.mini2Dx.core.game.BasicGame;
 import org.mini2Dx.core.graphics.Graphics;
 
@@ -21,21 +20,21 @@ public class SpaceInvadersGame extends BasicGame {
     private Sprite backdrop;
     private Ship ship;
     private ArrayList<ArrayList<Alien>> enemies;
-    private ArrayList<DefaultLaser> projectiles;
-    private ArrayList<Bomb> enemyProjectiles;
+    private ArrayList<Projectile> projectiles;
+    private ArrayList<Projectile> enemyProjectiles;
 
     @Override
     public void initialise() {
         backdrop = new Sprite(new Texture("backdrop.png"));
         ship = new Ship();
         enemies = generateAliens();
-        projectiles = new ArrayList<DefaultLaser>();
-        enemyProjectiles = new ArrayList<Bomb>();
+        projectiles = new ArrayList<Projectile>();
+        enemyProjectiles = new ArrayList<Projectile>();
     }
 
     @Override
     public void update(float delta) {
-        checkForHits();
+        checkForAlienHits();
         clearOffScreenProjectiles();
         clearOffScreenAliens();
         reactToKeyPresses();
@@ -54,11 +53,11 @@ public class SpaceInvadersGame extends BasicGame {
         // Update ship
         ship.update(delta);
         // Update projectiles
-        for (DefaultLaser p : projectiles) {
+        for (Projectile p : projectiles) {
             p.update(delta);
         }
         // Update enemy projectiles
-        for (Bomb p : enemyProjectiles) {
+        for (Projectile p : enemyProjectiles) {
             p.update(delta);
         }
         // Update enemies
@@ -74,11 +73,11 @@ public class SpaceInvadersGame extends BasicGame {
         // Interpolate ship
         ship.interpolate(alpha);
         // Interpolate projectiles
-        for (DefaultLaser p : projectiles) {
+        for (Projectile p : projectiles) {
             p.interpolate(alpha);
         }
         // Interpolate enemy projectiles
-        for (Bomb p : enemyProjectiles) {
+        for (Projectile p : enemyProjectiles) {
             p.interpolate(alpha);
         }
         // Interpolate enemies
@@ -95,11 +94,11 @@ public class SpaceInvadersGame extends BasicGame {
         // Render ship
         ship.render(g);
         // Render projectiles
-        for (DefaultLaser p : projectiles) {
+        for (Projectile p : projectiles) {
             p.render(g);
         }
         // Render enemy projectiles
-        for (Bomb p : enemyProjectiles) {
+        for (Projectile p : enemyProjectiles) {
             p.render(g);
         }
         // Render enemies
@@ -124,7 +123,7 @@ public class SpaceInvadersGame extends BasicGame {
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
             ship.moveHor(5);
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
-            ship.shoot(projectiles);
+            ship.shoot(projectiles, 7);
     }
 
     private ArrayList<ArrayList<Alien>> generateAliens() {
@@ -161,8 +160,8 @@ public class SpaceInvadersGame extends BasicGame {
     }
 
     private void clearOffScreenProjectiles() {
-        ArrayList<DefaultLaser> remove = new ArrayList<DefaultLaser>();
-        for (DefaultLaser p : projectiles) {
+        ArrayList<Projectile> remove = new ArrayList<Projectile>();
+        for (Projectile p : projectiles) {
             if (p.getY() + p.getHeight() < 0)
                 remove.add(p);
         }
@@ -181,10 +180,10 @@ public class SpaceInvadersGame extends BasicGame {
         }
     }
 
-    private void checkForHits() {
+    private void checkForAlienHits() {
         ArrayList<Alien> aliensToRemove;
-        ArrayList<DefaultLaser> projectilesToRemove = new ArrayList<DefaultLaser>();
-        for (DefaultLaser p : projectiles) {
+        ArrayList<Projectile> projectilesToRemove = new ArrayList<Projectile>();
+        for (Projectile p : projectiles) {
             for (ArrayList<Alien> row : enemies) {
                 aliensToRemove = new ArrayList<Alien>();
                 for (Alien a : row) {
@@ -207,7 +206,7 @@ public class SpaceInvadersGame extends BasicGame {
                 attackingEnemies = attackingEnemies < 3 ? Math.min(attackingEnemies, row.size()) : 0;
                 for (int i = 0; i < attackingEnemies; i++) {
                     int enemyIndex = rand.nextInt(row.size());
-                    row.get(enemyIndex).dropBomb(enemyProjectiles);
+                    row.get(enemyIndex).dropBomb(enemyProjectiles, 5);
                 }
             }
         }
