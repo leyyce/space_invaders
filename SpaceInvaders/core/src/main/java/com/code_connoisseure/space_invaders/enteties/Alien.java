@@ -2,12 +2,16 @@ package com.code_connoisseure.space_invaders.enteties;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.code_connoisseure.space_invaders.enteties.projectiles.Bomb;
+import com.code_connoisseure.space_invaders.enteties.projectiles.DefaultLaser;
 import org.mini2Dx.core.engine.geom.CollisionBox;
 import org.mini2Dx.core.geom.Shape;
 import org.mini2Dx.core.graphics.Animation;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.core.graphics.SpriteSheet;
+
+import java.util.ArrayList;
 
 public class Alien {
     private CollisionBox collisionBox;
@@ -41,6 +45,10 @@ public class Alien {
     public void render(Graphics g) {
         //Use the point's render coordinates to draw the sprite
         g.drawSprite(alienAnimation.getCurrentFrame(), collisionBox.getRenderX(), collisionBox.getRenderY());
+    }
+
+    public void dropBomb(ArrayList<Bomb> projectiles) {
+        projectiles.add(new Bomb(collisionBox.getCenterX() - DefaultLaser.getSheetFrameWidth() / 2f, collisionBox.getY() + collisionBox.getWidth()));
     }
 
     public Texture getAlienTexture() {
