@@ -48,7 +48,7 @@ public class Alien {
     }
 
     public void dropBomb(ArrayList<Projectile> projectiles, float speed) {
-        projectiles.add(new Bomb(collisionBox.getCenterX(), collisionBox.getY() + collisionBox.getWidth(), speed));
+        projectiles.add(new Bomb(collisionBox.getCenterX(), collisionBox.getCenterY() + collisionBox.getWidth(), speed));
     }
 
     public Texture getAlienTexture() {

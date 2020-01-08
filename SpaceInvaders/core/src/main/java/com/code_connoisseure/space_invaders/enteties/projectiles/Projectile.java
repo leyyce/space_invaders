@@ -14,14 +14,14 @@ public class Projectile {
     protected int sheetFrameWidth;
     protected int sheetFrameHeight;
 
-    public Projectile(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float speed) {
+    public Projectile(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, float speed) {
         SpriteSheet sheet = new SpriteSheet(spriteSheet, sheetFrameWidth, sheetFrameHeight);
         projectileAnimation = new Animation<Sprite>();
         this.sheetFrameWidth = sheetFrameWidth;
         this.sheetFrameHeight = sheetFrameHeight;
         this.collisionBox = new CollisionBox(x - sheetFrameWidth / 2f, y, sheetFrameWidth, sheetFrameHeight);
         for (int i = 0; i < sheet.getTotalFrames(); i++) {
-            this.projectileAnimation.addFrame(sheet.getSprite(i), 0.1f);
+            this.projectileAnimation.addFrame(sheet.getSprite(i), animationDuration);
         }
         projectileAnimation.setLooping(true);
         this.speed = speed;

@@ -206,7 +206,7 @@ public class SpaceInvadersGame extends BasicGame {
                 attackingEnemies = attackingEnemies < 3 ? Math.min(attackingEnemies, row.size()) : 0;
                 for (int i = 0; i < attackingEnemies; i++) {
                     int enemyIndex = rand.nextInt(row.size());
-                    row.get(enemyIndex).dropBomb(enemyProjectiles, 5);
+                    row.get(enemyIndex).dropBomb(enemyProjectiles, 2);
                 }
             }
         }
