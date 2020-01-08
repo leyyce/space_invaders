@@ -6,7 +6,8 @@ import com.badlogic.gdx.backends.lwjgl.DesktopMini2DxGame;
 
 import com.code_connoisseure.space_invaders.SpaceInvadersGame;
 
-import java.awt.*;
+import java.awt.Toolkit;
+import java.awt.Dimension;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {

@@ -203,8 +203,8 @@ public class SpaceInvadersGame extends BasicGame {
         Random rand = new Random();
         for (ArrayList<Alien> row : enemies) {
             if (row.size() > 0) {
-                int attackingEnemies = rand.nextInt(100);  // Bound is exclusive
-                attackingEnemies = attackingEnemies < 3 ? attackingEnemies : 0;
+                int attackingEnemies = rand.nextInt(151);  // Bound is exclusive
+                attackingEnemies = attackingEnemies < 3 ? Math.min(attackingEnemies, row.size()) : 0;
                 for (int i = 0; i < attackingEnemies; i++) {
                     int enemyIndex = rand.nextInt(row.size());
                     row.get(enemyIndex).dropBomb(enemyProjectiles);

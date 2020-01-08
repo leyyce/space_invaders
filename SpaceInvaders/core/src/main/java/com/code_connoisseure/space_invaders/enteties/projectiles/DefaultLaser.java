@@ -11,16 +11,16 @@ public class DefaultLaser {
 
     private CollisionBox collisionBox;
     private Animation<Sprite> laserAnimation = new Animation<Sprite>();
-    private float speed = 10;
-    private static int sheetFrameWidth = 6;
-    private static int getSheetFrameHeight = 15;
+    private float speed = 5;
+    private static int sheetFrameWidth = 5;
+    private static int getSheetFrameHeight = 14;
 
     public DefaultLaser(float x, float y) {
         Texture shipTextures = new Texture("laser_projectile.png");
         SpriteSheet sheet = new SpriteSheet(shipTextures, sheetFrameWidth, getSheetFrameHeight);
         collisionBox = new CollisionBox(x, y, sheetFrameWidth, getSheetFrameHeight);
         for (int i = 0; i < sheet.getTotalFrames(); i++) {
-            laserAnimation.addFrame(sheet.getSprite(i), 0.2f);
+            laserAnimation.addFrame(sheet.getSprite(i), 0.1f);
         }
         laserAnimation.setLooping(true);
     }

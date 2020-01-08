@@ -15,12 +15,13 @@ import java.util.ArrayList;
 public class Ship {
     private CollisionBox collisionBox;
     private Animation<Sprite> shipAnimation = new Animation<Sprite>();
-    private int sheetFrameDimension = 108;
+    private int sheetFrameWidth = 99;
+    private int sheetFrameHeight = 102;
 
     public Ship() {
         Texture shipTextures = new Texture("ship.png");
-        SpriteSheet sheet = new SpriteSheet(shipTextures, sheetFrameDimension, sheetFrameDimension);
-        collisionBox = new CollisionBox(getCenterPosition()[0], getCenterPosition()[1], sheetFrameDimension, sheetFrameDimension);
+        SpriteSheet sheet = new SpriteSheet(shipTextures, sheetFrameWidth, sheetFrameHeight);
+        collisionBox = new CollisionBox(getCenterPosition()[0], getCenterPosition()[1], sheetFrameWidth, sheetFrameHeight);
         for (int i = 0; i < sheet.getTotalFrames(); i++) {
             shipAnimation.addFrame(sheet.getSprite(i), 0.2f);
         }
@@ -79,7 +80,7 @@ public class Ship {
     }
 
     private float[] getCenterPosition() {
-        return new float[]{Gdx.graphics.getWidth() / 2f - sheetFrameDimension / 2f, Gdx.graphics.getHeight() - 20 - sheetFrameDimension};
+        return new float[]{Gdx.graphics.getWidth() / 2f - sheetFrameWidth / 2f, Gdx.graphics.getHeight() - 20 - sheetFrameHeight};
     }
 
     public Texture getShipTexture() {
