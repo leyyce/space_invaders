@@ -3,10 +3,6 @@ package com.code_connoisseure.space_invaders.enteties.player_ships;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.code_connoisseure.space_invaders.enteties.AnimatedBoxGameObject;
-import com.code_connoisseure.space_invaders.enteties.projectiles.DefaultLaser;
-import com.code_connoisseure.space_invaders.enteties.projectiles.Projectile;
-
-import java.util.ArrayList;
 
 public abstract class PlayerShip extends AnimatedBoxGameObject {
 
@@ -34,20 +30,9 @@ public abstract class PlayerShip extends AnimatedBoxGameObject {
         return super.objectInBounds() && collisionBox.getY() == _getCenterY(sheetFrameHeight);
     }
 
-    public boolean move(Directions xDirection) {
-        if (xDirection == Directions.LEFT || xDirection == Directions.RIGHT) {
-            return moveHor(xDirection);
-        }
-        return false;
-    }
-
     @Override
-    public boolean move(Directions xDirection, Directions yDirection) {
-        return move(xDirection);
-    }
-
-    public void fire(ArrayList<Projectile> projectiles, float speed) {
-        projectiles.add(new DefaultLaser(collisionBox.getCenterX(), collisionBox.getY(), speed));
+    protected boolean moveInBounds(Directions xDirection, Directions yDirection) {
+        return super.moveInBounds(xDirection, yDirection) && yDirection == null;
     }
 
     // TODO Find usage and replace with functions from AnimatedBoxObject

@@ -2,11 +2,15 @@ package com.code_connoisseure.space_invaders.enteties;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.code_connoisseure.space_invaders.enteties.projectiles.DefaultLaser;
+import com.code_connoisseure.space_invaders.enteties.projectiles.Projectile;
 import org.mini2Dx.core.engine.geom.CollisionBox;
 import org.mini2Dx.core.graphics.Animation;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.core.graphics.SpriteSheet;
+
+import java.util.ArrayList;
 
 
 public abstract class AnimatedBoxGameObject {
@@ -56,8 +60,30 @@ public abstract class AnimatedBoxGameObject {
         g.drawSprite(objectAnimation.getCurrentFrame(), collisionBox.getRenderX(), collisionBox.getRenderY());
     }
 
+    public void fireProjectile(ArrayList<Projectile> projectiles, float speed) {
+        projectiles.add(new DefaultLaser(collisionBox.getCenterX(), collisionBox.getY(), speed));
+    }
+
     public boolean move(Directions xDirection, Directions yDirection) {
         return moveHor(xDirection) && moveVert(yDirection);
+    }
+
+    protected boolean moveHor(Directions direction) {
+        if (direction == null) return true;
+        if (moveInBounds(direction, null)) {
+            collisionBox.setX(collisionBox.getX() + (direction == Directions.RIGHT ? speed : -speed));
+            return true;
+        }
+        return false;
+    }
+
+    protected boolean moveVert(Directions direction) {
+        if (direction == null) return true;
+        if (moveInBounds(null, direction)) {
+            collisionBox.setY(collisionBox.getY() + (direction == Directions.DOWN ? speed : -speed));
+            return true;
+        }
+        return false;
     }
 
     public boolean objectInBounds() {
@@ -68,7 +94,6 @@ public abstract class AnimatedBoxGameObject {
         float x = collisionBox.getX();
         float y = collisionBox.getY();
 
-        System.out.println(x);
         boolean inBoundsX =  (
                 xDirection == null ? x + collisionBox.getWidth() <= Gdx.graphics.getWidth() && x >= 0 : (
                         xDirection == Directions.RIGHT ? x + collisionBox.getWidth() + speed <= Gdx.graphics.getWidth() : x - speed >= 0
@@ -81,22 +106,6 @@ public abstract class AnimatedBoxGameObject {
         );
 
         return inBoundsX && inBoundsY;
-    }
-
-    protected boolean moveHor(Directions direction) {
-        if (moveInBounds(direction, null)) {
-            collisionBox.setX(collisionBox.getX() + (direction == Directions.RIGHT ? speed : -speed));
-            return true;
-        }
-        return false;
-    }
-
-    protected boolean moveVert(Directions direction) {
-        if (moveInBounds(null, direction)) {
-            collisionBox.setY(collisionBox.getY() + (direction == Directions.DOWN ? speed : -speed));
-            return true;
-        }
-        return false;
     }
 
     // Setter and Getters

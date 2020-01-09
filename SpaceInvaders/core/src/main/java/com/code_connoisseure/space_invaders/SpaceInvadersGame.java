@@ -122,11 +122,11 @@ public class SpaceInvadersGame extends BasicGame {
 	        ship.moveVert(5);
 	     */
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
-            ship.move(AnimatedBoxGameObject.Directions.LEFT);
+            ship.move(AnimatedBoxGameObject.Directions.LEFT, null);
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
-            ship.move(AnimatedBoxGameObject.Directions.RIGHT);
+            ship.move(AnimatedBoxGameObject.Directions.RIGHT, null);
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
-            ship.fire(projectiles, 7);
+            ship.fireProjectile(projectiles, 7);
     }
 
     private ArrayList<ArrayList<Alien>> generateAliens() {

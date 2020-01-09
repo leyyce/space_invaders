@@ -16,7 +16,7 @@ public abstract class Projectile extends AnimatedBoxGameObject {
         //preUpdate() must be called before any changes are made to the CollisionBox
         collisionBox.preUpdate();
 
-        moveVert(moveDirection);
+        move(null, moveDirection);
 
         objectAnimation.update(delta);
     }
