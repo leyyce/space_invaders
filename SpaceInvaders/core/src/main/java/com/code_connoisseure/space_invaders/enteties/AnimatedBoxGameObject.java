@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.code_connoisseure.space_invaders.enteties.projectiles.DefaultLaser;
 import com.code_connoisseure.space_invaders.enteties.projectiles.Projectile;
 import org.mini2Dx.core.engine.geom.CollisionBox;
+import org.mini2Dx.core.geom.Shape;
 import org.mini2Dx.core.graphics.Animation;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.Sprite;
@@ -66,6 +67,10 @@ public abstract class AnimatedBoxGameObject {
 
     public boolean move(Directions xDirection, Directions yDirection) {
         return moveHor(xDirection) && moveVert(yDirection);
+    }
+
+    public boolean contains(Shape shape) {
+        return collisionBox.contains(shape);
     }
 
     protected boolean moveHor(Directions direction) {

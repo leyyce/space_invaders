@@ -55,6 +55,7 @@ public class SpaceInvadersGame extends BasicGame {
         }
 
         checkForAlienHits();
+        checkForPlayerHits();
         clearOffScreenProjectiles();
         clearOffScreenAliens();
         reactToKeyPresses();
@@ -172,10 +173,16 @@ public class SpaceInvadersGame extends BasicGame {
     private void clearOffScreenProjectiles() {
         ArrayList<Projectile> remove = new ArrayList<Projectile>();
         for (Projectile p : projectiles) {
-            if (!p.objectInBounds())
+            if (p.getY() + p.getHeight() < 0 || p.getY() > Gdx.graphics.getHeight())
                 remove.add(p);
         }
         projectiles.removeAll(remove);
+        remove = new ArrayList<Projectile>();
+        for (Projectile p : enemyProjectiles) {
+            if (p.getY() + p.getHeight() < 0 || p.getY() > Gdx.graphics.getHeight())
+                remove.add(p);
+        }
+        enemyProjectiles.removeAll(remove);
     }
 
     private void clearOffScreenAliens() {
@@ -206,6 +213,17 @@ public class SpaceInvadersGame extends BasicGame {
             }
         }
         projectiles.removeAll(projectilesToRemove);
+    }
+
+    private void checkForPlayerHits() {
+        ArrayList<Projectile> projectilesToRemove = new ArrayList<Projectile>();
+        for (Projectile p : enemyProjectiles) {
+            if (ship.contains(p.getCollisionBox())) {
+                ship = new DefaultShip();
+                projectilesToRemove.add(p);
+            }
+        }
+        enemyProjectiles.removeAll(projectilesToRemove);
     }
 
     private void enemyAttacks() {

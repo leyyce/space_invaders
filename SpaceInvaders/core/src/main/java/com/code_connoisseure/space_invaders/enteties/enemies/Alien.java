@@ -1,7 +1,6 @@
 package com.code_connoisseure.space_invaders.enteties.enemies;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.code_connoisseure.space_invaders.enteties.enemies.BasicEnemy;
 
 public class Alien extends BasicEnemy {
     private static Texture spriteSheet = new Texture("enemies/alien.png");

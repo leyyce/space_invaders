@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.code_connoisseure.space_invaders.enteties.AnimatedBoxGameObject;
 import com.code_connoisseure.space_invaders.enteties.projectiles.Bomb;
 import com.code_connoisseure.space_invaders.enteties.projectiles.Projectile;
-import org.mini2Dx.core.geom.Shape;
 
 import java.util.ArrayList;
 
@@ -51,9 +50,5 @@ public class BasicEnemy extends AnimatedBoxGameObject {
     @Override
     public void fireProjectile(ArrayList<Projectile> projectiles, float speed) {
         projectiles.add(new Bomb(collisionBox.getCenterX(), collisionBox.getY(), speed));
-    }
-
-    public boolean contains(Shape shape) {
-        return collisionBox.contains(shape);
     }
 }
