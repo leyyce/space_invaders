@@ -6,9 +6,11 @@ public class DefaultShip extends PlayerShip {
     private static Texture spriteSheet = new Texture("ships/ship.png");
     private static int sheetFrameWidth = 99;
     private static int sheetFrameHeight = 102;
+    private static float animationDuration = 0.2f;
+    private static float speed = 5;
 
     public DefaultShip() {
-        super(spriteSheet, sheetFrameWidth, sheetFrameHeight, 0.2f, 5);
+        super(spriteSheet, sheetFrameWidth, sheetFrameHeight, animationDuration, speed);
     }
 
     public DefaultShip(float x, float y) {

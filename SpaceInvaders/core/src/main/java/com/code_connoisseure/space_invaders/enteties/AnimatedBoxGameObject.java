@@ -110,6 +110,10 @@ public abstract class AnimatedBoxGameObject {
 
     // Setter and Getters
 
+    public Texture getCurrentTextureFrame() {
+        return objectAnimation.getCurrentFrame().getTexture();
+    }
+
     public float getX() {
         return collisionBox.getX();
     }
