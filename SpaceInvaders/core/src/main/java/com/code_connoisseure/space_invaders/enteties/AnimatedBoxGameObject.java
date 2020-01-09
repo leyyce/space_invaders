@@ -1,5 +1,6 @@
 package com.code_connoisseure.space_invaders.enteties;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import org.mini2Dx.core.engine.geom.CollisionBox;
 import org.mini2Dx.core.graphics.Animation;
@@ -14,6 +15,13 @@ public abstract class AnimatedBoxGameObject {
     protected int sheetFrameWidth;
     protected int sheetFrameHeight;
     protected float speed;
+
+    public enum Directions {
+        LEFT,
+        RIGHT,
+        UP,
+        DOWN
+    }
 
     public AnimatedBoxGameObject(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, boolean looping,
                                  float speed) {
@@ -32,7 +40,7 @@ public abstract class AnimatedBoxGameObject {
 
     public void update(float delta) {
         //preUpdate() must be called before any changes are made to the CollisionBox
-        // collisionBox.preUpdate();
+        collisionBox.preUpdate();
         objectAnimation.update(delta);
     }
 
@@ -47,6 +55,51 @@ public abstract class AnimatedBoxGameObject {
         //Use the point's render coordinates to draw the sprite
         g.drawSprite(objectAnimation.getCurrentFrame(), collisionBox.getRenderX(), collisionBox.getRenderY());
     }
+
+    public boolean move(Directions xDirection, Directions yDirection) {
+        return moveHor(xDirection) && moveVert(yDirection);
+    }
+
+    public boolean objectInBounds() {
+        return moveInBounds(null, null);
+    }
+
+    protected boolean moveInBounds(Directions xDirection, Directions yDirection) {
+        float x = collisionBox.getX();
+        float y = collisionBox.getY();
+
+        System.out.println(x);
+        boolean inBoundsX =  (
+                xDirection == null ? x + collisionBox.getWidth() <= Gdx.graphics.getWidth() && x >= 0 : (
+                        xDirection == Directions.RIGHT ? x + collisionBox.getWidth() + speed <= Gdx.graphics.getWidth() : x - speed >= 0
+                )
+        );
+        boolean inBoundsY =  (
+                yDirection == null ? y + collisionBox.getHeight() <= Gdx.graphics.getHeight() && y >= 0 : (
+                        yDirection == Directions.DOWN ? y + collisionBox.getHeight() <= Gdx.graphics.getHeight() + speed : x - speed >= 0
+                )
+        );
+
+        return inBoundsX && inBoundsY;
+    }
+
+    protected boolean moveHor(Directions direction) {
+        if (moveInBounds(direction, null)) {
+            collisionBox.setX(collisionBox.getX() + (direction == Directions.RIGHT ? speed : -speed));
+            return true;
+        }
+        return false;
+    }
+
+    protected boolean moveVert(Directions direction) {
+        if (moveInBounds(null, direction)) {
+            collisionBox.setY(collisionBox.getY() + (direction == Directions.DOWN ? speed : -speed));
+            return true;
+        }
+        return false;
+    }
+
+    // Setter and Getters
 
     public float getX() {
         return collisionBox.getX();

@@ -6,6 +6,7 @@ import java.util.Random;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
+import com.code_connoisseure.space_invaders.enteties.AnimatedBoxGameObject;
 import com.code_connoisseure.space_invaders.enteties.player_ships.PlayerShip;
 import com.code_connoisseure.space_invaders.enteties.projectiles.Projectile;
 import org.mini2Dx.core.game.BasicGame;
@@ -35,22 +36,6 @@ public class SpaceInvadersGame extends BasicGame {
 
     @Override
     public void update(float delta) {
-        checkForAlienHits();
-        clearOffScreenProjectiles();
-        clearOffScreenAliens();
-        reactToKeyPresses();
-        enemyAttacks();
-        // FOR TESTING ONLY: Make aliens respawn if all are cleared
-        boolean allRowsEmpty = true;
-        for (ArrayList<Alien> row : enemies) {
-            if (row.size() != 0) {
-                allRowsEmpty = false;
-                break;
-            }
-        }
-        if (allRowsEmpty)
-            enemies = generateAliens();
-        // ----------------------------------------------------------
         // Update ship
         ship.update(delta);
         // Update projectiles
@@ -67,6 +52,23 @@ public class SpaceInvadersGame extends BasicGame {
                 alien.update(delta);
             }
         }
+
+        checkForAlienHits();
+        clearOffScreenProjectiles();
+        clearOffScreenAliens();
+        reactToKeyPresses();
+        enemyAttacks();
+        // FOR TESTING ONLY: Make aliens respawn if all are cleared
+        boolean allRowsEmpty = true;
+        for (ArrayList<Alien> row : enemies) {
+            if (row.size() != 0) {
+                allRowsEmpty = false;
+                break;
+            }
+        }
+        if (allRowsEmpty)
+            enemies = generateAliens();
+        // ----------------------------------------------------------
     }
 
     @Override
@@ -120,9 +122,9 @@ public class SpaceInvadersGame extends BasicGame {
 	        ship.moveVert(5);
 	     */
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
-            ship.move(PlayerShip.Directions.LEFT);
+            ship.move(AnimatedBoxGameObject.Directions.LEFT);
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
-            ship.move(PlayerShip.Directions.RIGHT);
+            ship.move(AnimatedBoxGameObject.Directions.RIGHT);
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
             ship.fire(projectiles, 7);
     }
@@ -163,7 +165,7 @@ public class SpaceInvadersGame extends BasicGame {
     private void clearOffScreenProjectiles() {
         ArrayList<Projectile> remove = new ArrayList<Projectile>();
         for (Projectile p : projectiles) {
-            if (p.getY() + p.getHeight() < 0)
+            if (!p.objectInBounds())
                 remove.add(p);
         }
         projectiles.removeAll(remove);
