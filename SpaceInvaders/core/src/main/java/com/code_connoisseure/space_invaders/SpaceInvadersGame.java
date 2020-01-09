@@ -6,27 +6,28 @@ import java.util.Random;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
+import com.code_connoisseure.space_invaders.enteties.player_ships.PlayerShip;
 import com.code_connoisseure.space_invaders.enteties.projectiles.Projectile;
 import org.mini2Dx.core.game.BasicGame;
 import org.mini2Dx.core.graphics.Graphics;
 
 import com.code_connoisseure.space_invaders.enteties.Alien;
-import com.code_connoisseure.space_invaders.enteties.Ship;
+import com.code_connoisseure.space_invaders.enteties.player_ships.DefaultShip;
 import org.mini2Dx.core.graphics.Sprite;
 
 public class SpaceInvadersGame extends BasicGame {
     public static final String GAME_IDENTIFIER = "com.code_connoisseure.space_invaders";
 
-    private Sprite backdrop;
-    private Ship ship;
+    private Sprite backGround;
+    private PlayerShip ship;
     private ArrayList<ArrayList<Alien>> enemies;
     private ArrayList<Projectile> projectiles;
     private ArrayList<Projectile> enemyProjectiles;
 
     @Override
     public void initialise() {
-        backdrop = new Sprite(new Texture("backdrop.png"));
-        ship = new Ship();
+        backGround = new Sprite(new Texture("backgrounds/background.png"));
+        ship = new DefaultShip();
         enemies = generateAliens();
         projectiles = new ArrayList<Projectile>();
         enemyProjectiles = new ArrayList<Projectile>();
@@ -90,7 +91,7 @@ public class SpaceInvadersGame extends BasicGame {
 
     @Override
     public void render(Graphics g) {
-        g.drawSprite(backdrop);
+        g.drawSprite(backGround);
         // Render ship
         ship.render(g);
         // Render projectiles
@@ -119,11 +120,11 @@ public class SpaceInvadersGame extends BasicGame {
 	        ship.moveVert(5);
 	     */
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
-            ship.moveHor(-5);
+            ship.move(PlayerShip.Directions.LEFT);
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
-            ship.moveHor(5);
+            ship.move(PlayerShip.Directions.RIGHT);
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
-            ship.shoot(projectiles, 7);
+            ship.fire(projectiles, 7);
     }
 
     private ArrayList<ArrayList<Alien>> generateAliens() {

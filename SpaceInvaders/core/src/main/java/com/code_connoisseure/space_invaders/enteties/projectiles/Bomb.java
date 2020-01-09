@@ -7,6 +7,6 @@ public class Bomb extends Projectile{
     private static int sheetFrameHeight = 36;
 
     public Bomb(float x, float y, float speed) {
-        super(new Texture("bomb.png"), x, y, sheetFrameWidth, sheetFrameHeight, 0.125f, -speed);
+        super(new Texture("projectiles/bomb.png"), x, y, sheetFrameWidth, sheetFrameHeight, 0.125f, -speed);
     }
 }

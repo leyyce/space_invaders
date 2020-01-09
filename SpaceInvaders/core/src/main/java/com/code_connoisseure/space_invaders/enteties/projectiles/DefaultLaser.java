@@ -7,6 +7,6 @@ public class DefaultLaser extends Projectile{
     private static int sheetFrameHeight = 14;
 
     public DefaultLaser(float x, float y, float speed) {
-        super(new Texture("laser_projectile.png"), x, y, sheetFrameWidth, sheetFrameHeight, 0.2f, speed);
+        super(new Texture("projectiles/laser_projectile.png"), x, y, sheetFrameWidth, sheetFrameHeight, 0.2f, speed);
     }
 }

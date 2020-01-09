@@ -19,7 +19,7 @@ public class Alien {
     private boolean moveRight = true;
 
     public Alien(float x, float y) {
-        Texture alienTextures = new Texture("alien.png");
+        Texture alienTextures = new Texture("enemies/alien.png");
         SpriteSheet sheet = new SpriteSheet(alienTextures, 60, 60);
         collisionBox = new CollisionBox(x, y, alienTextures.getWidth() - 25, alienTextures.getHeight() - 25);
         for (int i = 0; i < sheet.getTotalFrames(); i++) {
