@@ -113,8 +113,14 @@ public class SpaceInvadersGame extends BasicGame {
     }
 
     private void reactToKeyPresses() {
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
-            Gdx.graphics.setWindowedMode(640, 480);
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            if (Gdx.graphics.isFullscreen())
+                Gdx.graphics.setWindowedMode(800, 600);
+            else {
+                Gdx.app.exit();
+                System.exit(0);
+            }
+        }
 	    /* REMOVED BECAUSE YOU'RE ONLY SUPPOSED TO MOVE LEFT AND RIGHT
 	    if (Gdx.input.isKeyPressed(Input.Keys.UP))
 	        ship.moveVert(-5);

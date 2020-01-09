@@ -12,6 +12,7 @@ import java.awt.Dimension;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		DesktopMini2DxConfig config = new DesktopMini2DxConfig(SpaceInvadersGame.GAME_IDENTIFIER);
+		config.title = "[Alpha] SpaceInvaders";
 		config.vSyncEnabled = true;
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		config.fullscreen = false;
