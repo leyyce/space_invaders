@@ -5,11 +5,13 @@ import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.code_connoisseure.space_invaders.enteties.AnimatedBoxGameObject;
 import com.code_connoisseure.space_invaders.enteties.enemies.BasicEnemy;
 import com.code_connoisseure.space_invaders.enteties.player_ships.PlayerShip;
 import com.code_connoisseure.space_invaders.enteties.projectiles.Projectile;
+import com.code_connoisseure.space_invaders.music.PlayList;
 import org.mini2Dx.core.game.BasicGame;
 import org.mini2Dx.core.graphics.Graphics;
 
@@ -25,6 +27,7 @@ public class SpaceInvadersGame extends BasicGame {
     private ArrayList<ArrayList<BasicEnemy>> enemies;
     private ArrayList<Projectile> projectiles;
     private ArrayList<Projectile> enemyProjectiles;
+    private PlayList playList;
 
     @Override
     public void initialise() {
@@ -33,10 +36,14 @@ public class SpaceInvadersGame extends BasicGame {
         enemies = generateAliens();
         projectiles = new ArrayList<Projectile>();
         enemyProjectiles = new ArrayList<Projectile>();
+        playList = new PlayList(Gdx.audio.newMusic(new FileHandle("music/outer_space.mp3")));
+        playList.shufflePlay();
     }
 
     @Override
     public void update(float delta) {
+        // Update playlist
+        playList.update(delta);
         // Update ship
         ship.update(delta);
         // Update projectiles
@@ -206,6 +213,8 @@ public class SpaceInvadersGame extends BasicGame {
                 for (BasicEnemy a : row) {
                     if (a.contains(p.getCollisionBox())) {
                         projectilesToRemove.add(p);
+                        // TODO Find good sounding explosion
+                        // a.destruct();  // Play destruction sound
                         aliensToRemove.add(a);
                     }
                 }

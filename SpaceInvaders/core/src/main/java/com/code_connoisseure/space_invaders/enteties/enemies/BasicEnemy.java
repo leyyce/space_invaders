@@ -1,6 +1,7 @@
 package com.code_connoisseure.space_invaders.enteties.enemies;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.code_connoisseure.space_invaders.enteties.AnimatedBoxGameObject;
 import com.code_connoisseure.space_invaders.enteties.projectiles.Bomb;
@@ -13,6 +14,10 @@ public class BasicEnemy extends AnimatedBoxGameObject {
 
     public BasicEnemy(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, float speed) {
         super(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, true, speed);
+    }
+
+    public BasicEnemy(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, float speed, Sound destructionSound) {
+        super(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, true, speed, destructionSound);
     }
 
     @Override

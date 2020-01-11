@@ -1,6 +1,7 @@
 package com.code_connoisseure.space_invaders.enteties;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.code_connoisseure.space_invaders.enteties.projectiles.DefaultLaser;
 import com.code_connoisseure.space_invaders.enteties.projectiles.Projectile;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 public abstract class AnimatedBoxGameObject {
     protected CollisionBox collisionBox;
     protected Animation<Sprite> objectAnimation;
+    protected Sound destructionSound;
     protected int sheetFrameWidth;
     protected int sheetFrameHeight;
     protected float speed;
@@ -30,6 +32,11 @@ public abstract class AnimatedBoxGameObject {
 
     public AnimatedBoxGameObject(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, boolean looping,
                                  float speed) {
+        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, looping, speed, null);
+    }
+
+    public AnimatedBoxGameObject(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, boolean looping,
+                                 float speed, Sound destructionSound) {
 
         collisionBox = new CollisionBox(x, y, sheetFrameWidth, sheetFrameHeight);
         SpriteSheet sheet = new SpriteSheet(spriteSheet, sheetFrameWidth, sheetFrameHeight);
@@ -41,6 +48,7 @@ public abstract class AnimatedBoxGameObject {
         }
         objectAnimation.setLooping(looping);
         this.speed = speed;
+        this.destructionSound = destructionSound;
     }
 
     public void update(float delta) {
@@ -62,7 +70,7 @@ public abstract class AnimatedBoxGameObject {
     }
 
     public void fireProjectile(ArrayList<Projectile> projectiles, float speed) {
-        projectiles.add(new DefaultLaser(collisionBox.getCenterX(), collisionBox.getY(), speed));
+        projectiles.add(new DefaultLaser(collisionBox.getCenterX(), collisionBox.getY() - DefaultLaser.getSheetFrameHeight_(), speed));
     }
 
     public boolean move(Directions xDirection, Directions yDirection) {
@@ -93,6 +101,14 @@ public abstract class AnimatedBoxGameObject {
 
     public boolean objectInBounds() {
         return moveInBounds(null, null);
+    }
+
+    public boolean destruct() {
+        if (destructionSound != null) {
+            destructionSound.play();
+            return true;
+        }
+        return false;
     }
 
     protected boolean moveInBounds(Directions xDirection, Directions yDirection) {
