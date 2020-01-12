@@ -125,11 +125,12 @@ public class PlayList {
     }
 
     public void update(float delta) {
-        playing = playList.get(currentTrack).isPlaying();
-        if (shufflePlay) {
-            if (!isPlaying()) {
-                shufflePlay();
-            }
+        boolean currentTrackPlaying = playList.get(currentTrack).isPlaying();
+        if (shufflePlay && playing && !currentTrackPlaying) {
+            shufflePlay();
+        }
+        else if (playing && !currentTrackPlaying) {
+            next();
         }
     }
 
