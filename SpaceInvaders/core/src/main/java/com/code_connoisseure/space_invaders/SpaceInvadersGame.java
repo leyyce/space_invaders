@@ -61,7 +61,7 @@ public class SpaceInvadersGame extends BasicGame {
             }
         }
 
-        checkForAlienHits();
+        checkForEnemyHits();
         checkForPlayerHits();
         clearOffScreenProjectiles();
         clearOffScreenAliens();
@@ -204,18 +204,19 @@ public class SpaceInvadersGame extends BasicGame {
         }
     }
 
-    private void checkForAlienHits() {
+    private void checkForEnemyHits() {
         ArrayList<BasicEnemy> aliensToRemove;
         ArrayList<Projectile> projectilesToRemove = new ArrayList<Projectile>();
         for (Projectile p : projectiles) {
             for (ArrayList<BasicEnemy> row : enemies) {
                 aliensToRemove = new ArrayList<BasicEnemy>();
-                for (BasicEnemy a : row) {
-                    if (a.contains(p.getCollisionBox())) {
-                        projectilesToRemove.add(p);
+                for (BasicEnemy e : row) {
+                    if (e.contains(p.getCollisionBox())) {
+                        p.damageObject();
+                        if (!p.alive()) projectilesToRemove.add(p);
                         // TODO Find good sounding explosion
-                        // a.destruct();  // Play destruction sound
-                        aliensToRemove.add(a);
+                        e.damageObject();
+                        if (!e.alive()) aliensToRemove.add(e);
                     }
                 }
                 row.removeAll(aliensToRemove);
@@ -228,8 +229,10 @@ public class SpaceInvadersGame extends BasicGame {
         ArrayList<Projectile> projectilesToRemove = new ArrayList<Projectile>();
         for (Projectile p : enemyProjectiles) {
             if (ship.contains(p.getCollisionBox())) {
-                ship = new DefaultShip();
-                projectilesToRemove.add(p);
+                ship.damageObject();
+                // ship = new DefaultShip();
+                p.damageObject();
+                if (!p.alive()) projectilesToRemove.add(p);
             }
         }
         enemyProjectiles.removeAll(projectilesToRemove);

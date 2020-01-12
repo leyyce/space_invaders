@@ -6,12 +6,12 @@ import com.code_connoisseure.space_invaders.enteties.AnimatedBoxGameObject;
 
 public abstract class PlayerShip extends AnimatedBoxGameObject {
 
-    public PlayerShip(Texture spriteSheet, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, float speed) {
-        super(spriteSheet, _getCenterX(sheetFrameWidth), _getCenterY(sheetFrameHeight), sheetFrameWidth, sheetFrameHeight, animationDuration, true, speed);
+    public PlayerShip(Texture spriteSheet, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, int lives, float speed) {
+        super(spriteSheet, _getCenterX(sheetFrameWidth), _getCenterY(sheetFrameHeight), sheetFrameWidth, sheetFrameHeight, animationDuration, true, lives, speed);
     }
 
-    public PlayerShip(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, float speed) {
-        super(spriteSheet, x + sheetFrameWidth / 2f, y + sheetFrameHeight / 2f, sheetFrameWidth, sheetFrameHeight, animationDuration, true, speed);
+    public PlayerShip(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, int lives, float speed) {
+        super(spriteSheet, x + sheetFrameWidth / 2f, y + sheetFrameHeight / 2f, sheetFrameWidth, sheetFrameHeight, animationDuration, true, lives, speed);
     }
 
     @Override

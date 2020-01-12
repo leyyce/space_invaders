@@ -22,6 +22,7 @@ public abstract class AnimatedBoxGameObject {
     protected int sheetFrameWidth;
     protected int sheetFrameHeight;
     protected float speed;
+    protected int lives;
 
     public enum Directions {
         LEFT,
@@ -30,13 +31,42 @@ public abstract class AnimatedBoxGameObject {
         DOWN
     }
 
+    public AnimatedBoxGameObject(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, boolean looping) {
+        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, looping, 1, 0, null);
+    }
+
     public AnimatedBoxGameObject(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, boolean looping,
-                                 float speed) {
-        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, looping, speed, null);
+                                 int lives) {
+        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, looping, lives, 0, null);
+    }
+
+    public AnimatedBoxGameObject(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, boolean looping,
+                                 Sound destructionSound) {
+        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, looping, 1, 0, destructionSound);
+    }
+
+    public AnimatedBoxGameObject(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, boolean looping,
+                                 int lives, Sound destructionSound) {
+        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, looping, lives, 0, destructionSound);
     }
 
     public AnimatedBoxGameObject(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, boolean looping,
                                  float speed, Sound destructionSound) {
+        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, looping, 1, speed, destructionSound);
+    }
+
+    public AnimatedBoxGameObject(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, boolean looping,
+                                 float speed) {
+        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, looping, 1, speed, null);
+    }
+
+    public AnimatedBoxGameObject(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, boolean looping,
+                                 int lives, float speed) {
+        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, looping, lives, speed, null);
+    }
+
+    public AnimatedBoxGameObject(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, boolean looping,
+                                 int lives, float speed, Sound destructionSound) {
 
         collisionBox = new CollisionBox(x, y, sheetFrameWidth, sheetFrameHeight);
         SpriteSheet sheet = new SpriteSheet(spriteSheet, sheetFrameWidth, sheetFrameHeight);
@@ -49,6 +79,7 @@ public abstract class AnimatedBoxGameObject {
         objectAnimation.setLooping(looping);
         this.speed = speed;
         this.destructionSound = destructionSound;
+        this.lives = lives;
     }
 
     public void update(float delta) {
@@ -69,11 +100,18 @@ public abstract class AnimatedBoxGameObject {
         g.drawSprite(objectAnimation.getCurrentFrame(), collisionBox.getRenderX(), collisionBox.getRenderY());
     }
 
-    public void fireProjectile(ArrayList<Projectile> projectiles, float speed) {
+    public boolean fireProjectile(ArrayList<Projectile> projectiles, float speed) {
+        if (!alive()) {
+            return false;
+        }
         projectiles.add(new DefaultLaser(collisionBox.getCenterX(), collisionBox.getY() - DefaultLaser.getSheetFrameHeight_(), speed));
+        return true;
     }
 
     public boolean move(Directions xDirection, Directions yDirection) {
+        if (!alive()) {
+            return false;
+        }
         return moveHor(xDirection) && moveVert(yDirection);
     }
 
@@ -103,7 +141,22 @@ public abstract class AnimatedBoxGameObject {
         return moveInBounds(null, null);
     }
 
-    public boolean destruct() {
+    public void damageObject() {
+        damageObject(1);
+    }
+
+    public void damageObject(int damage) {
+        lives -= damage;
+        if (!alive()) {
+            destruct();
+        }
+    }
+
+    public boolean alive() {
+        return lives > 0;
+    }
+
+    protected boolean destruct() {
         if (destructionSound != null) {
             destructionSound.play();
             return true;
