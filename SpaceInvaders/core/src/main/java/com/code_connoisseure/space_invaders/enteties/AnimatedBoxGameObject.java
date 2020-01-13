@@ -2,6 +2,7 @@ package com.code_connoisseure.space_invaders.enteties;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.code_connoisseure.space_invaders.enteties.projectiles.DefaultLaser;
 import com.code_connoisseure.space_invaders.enteties.projectiles.Projectile;
@@ -22,7 +23,7 @@ public abstract class AnimatedBoxGameObject {
     protected int sheetFrameWidth;
     protected int sheetFrameHeight;
     protected float speed;
-
+    protected Sound playerhitSound = Gdx.audio.newSound(new FileHandle("sounds/player_damage.wav"));
     public enum Directions {
         LEFT,
         RIGHT,
@@ -110,7 +111,13 @@ public abstract class AnimatedBoxGameObject {
         }
         return false;
     }
-
+    public boolean damage(){
+        if (playerhitSound != null) {
+            playerhitSound.play();
+            return true;
+        }
+        return false;
+    }
     protected boolean moveInBounds(Directions xDirection, Directions yDirection) {
         float x = collisionBox.getX();
         float y = collisionBox.getY();

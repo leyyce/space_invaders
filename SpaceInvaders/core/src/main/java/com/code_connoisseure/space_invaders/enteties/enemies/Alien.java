@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class Alien extends BasicEnemy {
     private static Texture spriteSheet = new Texture("enemies/alien.png");
-    private static Sound destructionSound = Gdx.audio.newSound(new FileHandle("sounds/alien_explosion.wav"));
+    private static Sound destructionSound = Gdx.audio.newSound(new FileHandle("sounds/alien_destruction.wav"));
     private static int sheetFrameWidth = 60;
     private static int sheetFrameHeight = 60;
     private static float animationDuration = 0.2f;
