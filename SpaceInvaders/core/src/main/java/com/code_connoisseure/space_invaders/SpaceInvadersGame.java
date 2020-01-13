@@ -12,6 +12,7 @@ import com.code_connoisseure.space_invaders.enteties.enemies.BasicEnemy;
 import com.code_connoisseure.space_invaders.enteties.player_ships.PlayerShip;
 import com.code_connoisseure.space_invaders.enteties.projectiles.Projectile;
 import com.code_connoisseure.space_invaders.music.PlayList;
+import com.code_connoisseure.space_invaders.ui.HealthBar;
 import org.mini2Dx.core.game.BasicGame;
 import org.mini2Dx.core.graphics.Graphics;
 
@@ -23,6 +24,7 @@ public class SpaceInvadersGame extends BasicGame {
     public static final String GAME_IDENTIFIER = "com.code_connoisseure.space_invaders";
 
     private Sprite backGround;
+    private HealthBar healthBar;
     private PlayerShip ship;
     private ArrayList<ArrayList<BasicEnemy>> enemies;
     private ArrayList<Projectile> projectiles;
@@ -33,6 +35,7 @@ public class SpaceInvadersGame extends BasicGame {
     public void initialise() {
         backGround = new Sprite(new Texture("backgrounds/background.png"));
         ship = new DefaultShip();
+        healthBar = new HealthBar(ship, 0, 0);
         enemies = generateAliens();
         projectiles = new ArrayList<Projectile>();
         enemyProjectiles = new ArrayList<Projectile>();
@@ -42,6 +45,7 @@ public class SpaceInvadersGame extends BasicGame {
 
     @Override
     public void update(float delta) {
+        healthBar.update(delta);
         // Update playlist
         playList.update(delta);
         // Update ship
@@ -82,6 +86,7 @@ public class SpaceInvadersGame extends BasicGame {
 
     @Override
     public void interpolate(float alpha) {
+        healthBar.interpolate(alpha);
         // Interpolate ship
         ship.interpolate(alpha);
         // Interpolate projectiles
@@ -119,6 +124,8 @@ public class SpaceInvadersGame extends BasicGame {
                 alien.render(g);
             }
         }
+        // Render Health Bar
+        healthBar.render(g);
     }
 
     private void reactToKeyPresses() {
@@ -229,7 +236,7 @@ public class SpaceInvadersGame extends BasicGame {
         ArrayList<Projectile> projectilesToRemove = new ArrayList<Projectile>();
         for (Projectile p : enemyProjectiles) {
             if (ship.contains(p.getCollisionBox())) {
-                ship.damageObject();
+                healthBar.damageShip();
                 // ship = new DefaultShip();
                 p.damageObject();
                 if (!p.alive()) projectilesToRemove.add(p);

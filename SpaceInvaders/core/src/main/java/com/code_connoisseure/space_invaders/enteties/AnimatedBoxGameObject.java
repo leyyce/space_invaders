@@ -208,6 +208,10 @@ public abstract class AnimatedBoxGameObject {
         return collisionBox;
     }
 
+    public int getLives() {
+        return lives;
+    }
+
     public int getSheetFrameWidth() {
         return sheetFrameWidth;
     }
