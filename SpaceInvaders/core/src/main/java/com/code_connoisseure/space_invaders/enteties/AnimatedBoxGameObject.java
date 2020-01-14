@@ -148,14 +148,18 @@ public abstract class AnimatedBoxGameObject {
         return moveInBounds(null, null);
     }
 
-    public void damageObject() {
-        damageObject(1);
+    public boolean damageObject() {
+        return damageObject(1);
     }
 
-    public void damageObject(int damage) {
-        lives -= damage;
-        if (!alive()) playDestructionSound();
-        else playDamageSound();
+    public boolean damageObject(int damage) {
+        if (alive()) {
+            lives -= Math.min(damage, lives);
+            if (!alive()) playDestructionSound();
+            else playDamageSound();
+            return true;
+        }
+        return false;
     }
 
     public boolean alive() {

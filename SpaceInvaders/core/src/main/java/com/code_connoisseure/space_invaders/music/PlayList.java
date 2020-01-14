@@ -46,12 +46,10 @@ public class PlayList {
     }
 
     public boolean play() {
-        if (!playing) {
-            if (trackCount > 0) {
-                playList.get(currentTrack).play();
-                playing = true;
-                return true;
-            }
+        if (trackCount > 0) {
+            playList.get(currentTrack).play();
+            playing = true;
+            return true;
         }
         return false;
     }

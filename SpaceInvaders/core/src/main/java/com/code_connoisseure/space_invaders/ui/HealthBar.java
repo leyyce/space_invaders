@@ -15,11 +15,11 @@ public class HealthBar {
 
     public HealthBar(PlayerShip shipToTrack, float x, float y) {
         this.trackedShip = shipToTrack;
-        x = x;
-        y = y;
+        this.x = x;
+        this.y = y;
         for (int i = 0; i < shipToTrack.getLives(); i++) {
             if (shipToTrack.getClass() == DefaultShip.class) {
-                healthAsShips.add(new DefaultShip(x + i * (trackedShip.getSheetFrameWidth() + spacing), y) {
+                healthAsShips.add(new DefaultShip(this.x + i * (trackedShip.getSheetFrameWidth() + spacing), this.y) {
                     // Removed re-centering of ship if it gets out of bounds.
                     @Override
                     public void update(float delta) {

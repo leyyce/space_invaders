@@ -40,7 +40,7 @@ public class SpaceInvadersGame extends BasicGame {
         enemies = generateAliens();
         projectiles = new ArrayList<Projectile>();
         enemyProjectiles = new ArrayList<Projectile>();
-        playList = new PlayList(Gdx.audio.newMusic(new FileHandle("music/outer_space.mp3")));
+        playList = new PlayList(Gdx.audio.newMusic(new FileHandle("music/out_of_space.mp3")));
         playList.shufflePlay();
     }
 
