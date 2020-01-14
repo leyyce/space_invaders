@@ -1,17 +1,29 @@
 package com.code_connoisseure.space_invaders.enteties.player_ships;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.code_connoisseure.space_invaders.enteties.AnimatedBoxGameObject;
 
 public abstract class PlayerShip extends AnimatedBoxGameObject {
 
+    private static Sound defaultDamageSound = Gdx.audio.newSound(new FileHandle("sounds/player_damage.wav"));
+
     public PlayerShip(Texture spriteSheet, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, int lives, float speed) {
-        super(spriteSheet, _getCenterX(sheetFrameWidth), _getCenterY(sheetFrameHeight), sheetFrameWidth, sheetFrameHeight, animationDuration, true, lives, speed);
+        this(spriteSheet, _getCenterX(sheetFrameWidth), _getCenterY(sheetFrameHeight), sheetFrameWidth, sheetFrameHeight, animationDuration, lives, speed);
     }
 
     public PlayerShip(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, int lives, float speed) {
-        super(spriteSheet, x + sheetFrameWidth / 2f, y + sheetFrameHeight / 2f, sheetFrameWidth, sheetFrameHeight, animationDuration, true, lives, speed);
+        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, lives, speed, null, defaultDamageSound);
+    }
+
+    public PlayerShip(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, int lives, float speed, Sound destructionSound) {
+        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, lives, speed, destructionSound, defaultDamageSound);
+    }
+
+    public PlayerShip(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, int lives, float speed, Sound destructionSound, Sound damageSound) {
+        super(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, true, lives, speed, destructionSound, damageSound);
     }
 
     @Override

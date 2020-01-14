@@ -2,7 +2,6 @@ package com.code_connoisseure.space_invaders.enteties;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.code_connoisseure.space_invaders.enteties.projectiles.DefaultLaser;
 import com.code_connoisseure.space_invaders.enteties.projectiles.Projectile;
@@ -20,6 +19,7 @@ public abstract class AnimatedBoxGameObject {
     protected CollisionBox collisionBox;
     protected Animation<Sprite> objectAnimation;
     protected Sound destructionSound;
+    protected Sound damageSound;
     protected int sheetFrameWidth;
     protected int sheetFrameHeight;
     protected float speed;
@@ -33,41 +33,46 @@ public abstract class AnimatedBoxGameObject {
     }
 
     public AnimatedBoxGameObject(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, boolean looping) {
-        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, looping, 1, 0, null);
+        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, looping, 1, 0, null, null);
     }
 
     public AnimatedBoxGameObject(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, boolean looping,
                                  int lives) {
-        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, looping, lives, 0, null);
+        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, looping, lives, 0, null, null);
     }
 
     public AnimatedBoxGameObject(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, boolean looping,
                                  Sound destructionSound) {
-        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, looping, 1, 0, destructionSound);
+        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, looping, 1, 0, destructionSound, null);
     }
 
     public AnimatedBoxGameObject(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, boolean looping,
                                  int lives, Sound destructionSound) {
-        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, looping, lives, 0, destructionSound);
+        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, looping, lives, 0, destructionSound, null);
     }
 
     public AnimatedBoxGameObject(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, boolean looping,
                                  float speed, Sound destructionSound) {
-        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, looping, 1, speed, destructionSound);
+        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, looping, 1, speed, destructionSound, null);
     }
 
     public AnimatedBoxGameObject(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, boolean looping,
                                  float speed) {
-        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, looping, 1, speed, null);
+        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, looping, 1, speed, null, null);
     }
 
     public AnimatedBoxGameObject(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, boolean looping,
                                  int lives, float speed) {
-        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, looping, lives, speed, null);
+        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, looping, lives, speed, null, null);
     }
 
     public AnimatedBoxGameObject(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, boolean looping,
                                  int lives, float speed, Sound destructionSound) {
+        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, looping, lives, speed, destructionSound, null);
+    }
+
+    public AnimatedBoxGameObject(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, boolean looping,
+                                 int lives, float speed, Sound destructionSound, Sound damageSound) {
 
         collisionBox = new CollisionBox(x, y, sheetFrameWidth, sheetFrameHeight);
         SpriteSheet sheet = new SpriteSheet(spriteSheet, sheetFrameWidth, sheetFrameHeight);
@@ -80,6 +85,7 @@ public abstract class AnimatedBoxGameObject {
         objectAnimation.setLooping(looping);
         this.speed = speed;
         this.destructionSound = destructionSound;
+        this.damageSound = damageSound;
         this.lives = lives;
     }
 
@@ -148,29 +154,30 @@ public abstract class AnimatedBoxGameObject {
 
     public void damageObject(int damage) {
         lives -= damage;
-        if (!alive()) {
-            destruct();
-        }
+        if (!alive()) playDestructionSound();
+        else playDamageSound();
     }
 
     public boolean alive() {
         return lives > 0;
     }
 
-    protected boolean destruct() {
+    protected boolean playDestructionSound() {
         if (destructionSound != null) {
             destructionSound.play();
             return true;
         }
         return false;
     }
-    public boolean damage(){
-        if (playerhitSound != null) {
-            playerhitSound.play();
+
+    protected boolean playDamageSound() {
+        if (damageSound != null) {
+            damageSound.play();
             return true;
         }
         return false;
     }
+
     protected boolean moveInBounds(Directions xDirection, Directions yDirection) {
         float x = collisionBox.getX();
         float y = collisionBox.getY();

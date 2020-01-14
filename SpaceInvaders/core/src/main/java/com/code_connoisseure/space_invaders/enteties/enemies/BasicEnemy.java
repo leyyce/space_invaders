@@ -13,15 +13,19 @@ public abstract class BasicEnemy extends AnimatedBoxGameObject {
     private boolean moveRight = true;
 
     public BasicEnemy(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, float speed) {
-        super(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, true, 1, speed);
+        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, 1, speed);
     }
 
     public BasicEnemy(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, int lives, float speed) {
-        super(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, true, lives, speed, null);
+        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, lives, speed, null);
     }
 
     public BasicEnemy(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, int lives, float speed, Sound destructionSound) {
-        super(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, true, lives, speed, destructionSound);
+        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, lives, speed, destructionSound, null);
+    }
+
+    public BasicEnemy(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, int lives, float speed, Sound destructionSound, Sound damageSound) {
+        super(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration,true,  lives, speed, destructionSound, damageSound);
     }
 
     @Override
