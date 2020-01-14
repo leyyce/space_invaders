@@ -41,6 +41,7 @@ public class SpaceInvadersGame extends BasicGame {
         enemyProjectiles = new ArrayList<Projectile>();
         playList = new PlayList(Gdx.audio.newMusic(new FileHandle("music/outer_space.mp3")));
         playList.shufflePlay();
+
     }
 
     @Override
@@ -132,6 +133,7 @@ public class SpaceInvadersGame extends BasicGame {
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             if (Gdx.graphics.isFullscreen())
                 Gdx.graphics.setWindowedMode(800, 600);
+
             else {
                 Gdx.app.exit();
                 System.exit(0);
