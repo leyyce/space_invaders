@@ -1,5 +1,6 @@
 package com.code_connoisseure.space_invaders;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -33,7 +34,7 @@ public class SpaceInvadersGame extends BasicGame {
 
     @Override
     public void initialise() {
-        backGround = new Sprite(new Texture("backgrounds/background.png"));
+        backGround = createScaledSprite(new Texture("backgrounds/background_2_4k.jpg"));
         ship = new DefaultShip();
         healthBar = new HealthBar(ship, 0, 0);
         enemies = generateAliens();
@@ -257,5 +258,16 @@ public class SpaceInvadersGame extends BasicGame {
                 }
             }
         }
+    }
+
+    private static Sprite createScaledSprite(Texture texture) {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        float SCALE_RATIO = (float) texture.getWidth() / screenSize.width;
+        Sprite sprite = new Sprite(texture);
+        sprite.getTexture().setFilter(Texture.TextureFilter.Linear,
+                Texture.TextureFilter.Linear);
+        sprite.setSize(sprite.getWidth() / SCALE_RATIO,
+                sprite.getHeight() / SCALE_RATIO);
+        return sprite;
     }
 }

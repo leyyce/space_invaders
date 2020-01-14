@@ -9,13 +9,14 @@ import com.code_connoisseure.space_invaders.enteties.AnimatedBoxGameObject;
 public abstract class PlayerShip extends AnimatedBoxGameObject {
 
     private static Sound defaultDamageSound = Gdx.audio.newSound(new FileHandle("sounds/player_damage.wav"));
+    private static Sound defaultDestructionSound = Gdx.audio.newSound(new FileHandle("sounds/player_destruction.wav"));
 
     public PlayerShip(Texture spriteSheet, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, int lives, float speed) {
         this(spriteSheet, _getCenterX(sheetFrameWidth), _getCenterY(sheetFrameHeight), sheetFrameWidth, sheetFrameHeight, animationDuration, lives, speed);
     }
 
     public PlayerShip(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, int lives, float speed) {
-        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, lives, speed, null, defaultDamageSound);
+        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, lives, speed, defaultDestructionSound, defaultDamageSound);
     }
 
     public PlayerShip(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, int lives, float speed, Sound destructionSound) {
