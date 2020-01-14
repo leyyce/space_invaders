@@ -7,13 +7,14 @@ public class DefaultShip extends PlayerShip {
     private static int sheetFrameWidth = 99;
     private static int sheetFrameHeight = 102;
     private static float animationDuration = 0.2f;
+    private static int lives = 3;
     private static float speed = 5;
 
     public DefaultShip() {
-        super(spriteSheet, sheetFrameWidth, sheetFrameHeight, animationDuration, speed);
+        super(spriteSheet, sheetFrameWidth, sheetFrameHeight, animationDuration, lives, speed);
     }
 
     public DefaultShip(float x, float y) {
-        super(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, 0.2f, 5);
+        super(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, lives, speed);
     }
 }

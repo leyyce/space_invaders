@@ -7,13 +7,14 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class Alien extends BasicEnemy {
     private static Texture spriteSheet = new Texture("enemies/alien.png");
-    private static Sound destructionSound = Gdx.audio.newSound(new FileHandle("sounds/alien_destruction.wav"));
+    // TODO Find good sounding destruction sound.
+    // private static Sound destructionSound = Gdx.audio.newSound(new FileHandle("sounds/alien_explosion.wav"));
     private static int sheetFrameWidth = 60;
     private static int sheetFrameHeight = 60;
     private static float animationDuration = 0.2f;
     private static float speed = 5;
 
     public Alien(float x, float y) {
-        super(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, speed, destructionSound);
+        super(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, speed);
     }
 }

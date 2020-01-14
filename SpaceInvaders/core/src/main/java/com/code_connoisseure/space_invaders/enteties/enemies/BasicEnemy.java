@@ -9,15 +9,19 @@ import com.code_connoisseure.space_invaders.enteties.projectiles.Projectile;
 
 import java.util.ArrayList;
 
-public class BasicEnemy extends AnimatedBoxGameObject {
+public abstract class BasicEnemy extends AnimatedBoxGameObject {
     private boolean moveRight = true;
 
     public BasicEnemy(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, float speed) {
-        super(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, true, speed);
+        super(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, true, 1, speed);
     }
 
-    public BasicEnemy(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, float speed, Sound destructionSound) {
-        super(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, true, speed, destructionSound);
+    public BasicEnemy(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, int lives, float speed) {
+        super(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, true, lives, speed, null);
+    }
+
+    public BasicEnemy(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, int lives, float speed, Sound destructionSound) {
+        super(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, true, lives, speed, destructionSound);
     }
 
     @Override
@@ -53,7 +57,9 @@ public class BasicEnemy extends AnimatedBoxGameObject {
     }
 
     @Override
-    public void fireProjectile(ArrayList<Projectile> projectiles, float speed) {
+    public boolean fireProjectile(ArrayList<Projectile> projectiles, float speed) {
+        if (!alive()) return false;
         projectiles.add(new Bomb(collisionBox.getCenterX(), collisionBox.getY(), speed));
+        return true;
     }
 }
