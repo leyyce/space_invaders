@@ -112,6 +112,11 @@ public class SpaceInvadersGame extends BasicGame {
                 alien.render(g);
             }
         }
+
+        // Render ammunition text
+        int currentAmmunition = ship.getAmmunition();
+        
+        g.drawString("Munition: " + currentAmmunition, 10, 20);
     }
 
     private void reactToKeyPresses() {

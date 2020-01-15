@@ -47,7 +47,6 @@ public class BasicEnemy extends AnimatedBoxGameObject {
         );
     }
 
-    @Override
     public void fireProjectile(ArrayList<Projectile> projectiles, float speed) {
         projectiles.add(new Bomb(collisionBox.getCenterX(), collisionBox.getY(), speed));
     }

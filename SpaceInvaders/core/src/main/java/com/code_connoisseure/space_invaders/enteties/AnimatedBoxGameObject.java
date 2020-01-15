@@ -30,7 +30,6 @@ public abstract class AnimatedBoxGameObject {
 
     public AnimatedBoxGameObject(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, boolean looping,
                                  float speed) {
-
         collisionBox = new CollisionBox(x, y, sheetFrameWidth, sheetFrameHeight);
         SpriteSheet sheet = new SpriteSheet(spriteSheet, sheetFrameWidth, sheetFrameHeight);
         objectAnimation = new Animation<Sprite>();
@@ -59,10 +58,6 @@ public abstract class AnimatedBoxGameObject {
     public void render(Graphics g) {
         //Use the point's render coordinates to draw the sprite
         g.drawSprite(objectAnimation.getCurrentFrame(), collisionBox.getRenderX(), collisionBox.getRenderY());
-    }
-
-    public void fireProjectile(ArrayList<Projectile> projectiles, float speed) {
-        projectiles.add(new DefaultLaser(collisionBox.getCenterX(), collisionBox.getY(), speed));
     }
 
     public boolean move(Directions xDirection, Directions yDirection) {

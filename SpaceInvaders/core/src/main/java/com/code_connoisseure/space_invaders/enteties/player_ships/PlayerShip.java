@@ -3,15 +3,22 @@ package com.code_connoisseure.space_invaders.enteties.player_ships;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.code_connoisseure.space_invaders.enteties.AnimatedBoxGameObject;
+import com.code_connoisseure.space_invaders.enteties.projectiles.DefaultLaser;
+import com.code_connoisseure.space_invaders.enteties.projectiles.Projectile;
+
+import java.util.ArrayList;
 
 public abstract class PlayerShip extends AnimatedBoxGameObject {
 
-    public PlayerShip(Texture spriteSheet, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, float speed) {
+    private int ammunition;
+    public PlayerShip(Texture spriteSheet, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, float speed, int ammunition) {
         super(spriteSheet, _getCenterX(sheetFrameWidth), _getCenterY(sheetFrameHeight), sheetFrameWidth, sheetFrameHeight, animationDuration, true, speed);
+        this.ammunition = ammunition;
     }
 
-    public PlayerShip(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, float speed) {
+    public PlayerShip(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, float speed, int ammunition){
         super(spriteSheet, x + sheetFrameWidth / 2f, y + sheetFrameHeight / 2f, sheetFrameWidth, sheetFrameHeight, animationDuration, true, speed);
+        this.ammunition = ammunition;
     }
 
     @Override
@@ -46,6 +53,17 @@ public abstract class PlayerShip extends AnimatedBoxGameObject {
             return super.moveHor(direction);
         }
         return false;
+    }
+
+    public void fireProjectile(ArrayList<Projectile> projectiles, float speed) {
+        if(ammunition > 0){
+            projectiles.add(new DefaultLaser(collisionBox.getCenterX(), collisionBox.getY(), speed));
+            ammunition--;
+        }
+    }
+
+    public int getAmmunition(){
+        return ammunition;
     }
 
     private static float _getCenterX(int sheetFrameWidth) {
