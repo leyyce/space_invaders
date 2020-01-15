@@ -6,7 +6,6 @@ import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.code_connoisseure.space_invaders.enteties.AnimatedBoxGameObject;
 import com.code_connoisseure.space_invaders.enteties.enemies.BasicEnemy;
@@ -34,13 +33,13 @@ public class SpaceInvadersGame extends BasicGame {
 
     @Override
     public void initialise() {
-        backGround = createScaledSprite(new Texture("backgrounds/background_2_4k.jpg"));
+        backGround = createScaledSprite(new Texture(Gdx.files.internal("backgrounds/background_2_4k.jpg")));
         ship = new DefaultShip();
         healthBar = new HealthBar(ship, 0, 0);
         enemies = generateAliens();
         projectiles = new ArrayList<Projectile>();
         enemyProjectiles = new ArrayList<Projectile>();
-        playList = new PlayList(Gdx.audio.newMusic(new FileHandle("music/out_of_space.mp3")));
+        playList = new PlayList(Gdx.audio.newMusic(Gdx.files.internal("music/out_of_space.mp3")));
         playList.shufflePlay();
     }
 

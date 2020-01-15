@@ -2,14 +2,13 @@ package com.code_connoisseure.space_invaders.enteties.player_ships;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.code_connoisseure.space_invaders.enteties.AnimatedBoxGameObject;
 
 public abstract class PlayerShip extends AnimatedBoxGameObject {
 
-    private static Sound defaultDamageSound = Gdx.audio.newSound(new FileHandle("sounds/player_damage.wav"));
-    private static Sound defaultDestructionSound = Gdx.audio.newSound(new FileHandle("sounds/player_destruction.wav"));
+    private static Sound defaultDamageSound = Gdx.audio.newSound(Gdx.files.internal("sounds/player_damage.wav"));
+    private static Sound defaultDestructionSound = Gdx.audio.newSound(Gdx.files.internal("sounds/player_destruction.wav"));
 
     public PlayerShip(Texture spriteSheet, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, int lives, float speed) {
         this(spriteSheet, _getCenterX(sheetFrameWidth), _getCenterY(sheetFrameHeight), sheetFrameWidth, sheetFrameHeight, animationDuration, lives, speed);
@@ -46,11 +45,6 @@ public abstract class PlayerShip extends AnimatedBoxGameObject {
     @Override
     protected boolean moveInBounds(Directions xDirection, Directions yDirection) {
         return super.moveInBounds(xDirection, yDirection) && yDirection == null;
-    }
-
-    // TODO Find usage and replace with functions from AnimatedBoxObject
-    public Texture getShipTexture() {
-        return objectAnimation.getCurrentFrame().getTexture();
     }
 
     @Override
