@@ -11,6 +11,7 @@ import com.code_connoisseure.space_invaders.enteties.AnimatedBoxGameObject;
 import com.code_connoisseure.space_invaders.enteties.enemies.BasicEnemy;
 import com.code_connoisseure.space_invaders.enteties.player_ships.PlayerShip;
 import com.code_connoisseure.space_invaders.enteties.projectiles.Projectile;
+import com.code_connoisseure.space_invaders.logic.LevelSettings;
 import com.code_connoisseure.space_invaders.music.PlayList;
 import com.code_connoisseure.space_invaders.ui.HealthBar;
 import org.mini2Dx.core.game.BasicGame;
@@ -23,6 +24,7 @@ import org.mini2Dx.core.graphics.Sprite;
 public class SpaceInvadersGame extends BasicGame {
     public static final String GAME_IDENTIFIER = "com.code_connoisseure.space_invaders";
 
+    private LevelSettings levelSettings;
     private Sprite backGround;
     private HealthBar healthBar;
     private PlayerShip ship;
@@ -33,6 +35,7 @@ public class SpaceInvadersGame extends BasicGame {
 
     @Override
     public void initialise() {
+        levelSettings = new LevelSettings();
         backGround = createScaledSprite(new Texture(Gdx.files.internal("backgrounds/background_2_4k.jpg")));
         ship = new DefaultShip();
         healthBar = new HealthBar(ship, 0, 0);
@@ -79,8 +82,10 @@ public class SpaceInvadersGame extends BasicGame {
                 break;
             }
         }
-        if (allRowsEmpty)
+        if (allRowsEmpty) {
+            levelSettings.increaseLevel();
             enemies = generateAliens();
+        }
         // ----------------------------------------------------------
     }
 
@@ -108,6 +113,7 @@ public class SpaceInvadersGame extends BasicGame {
     @Override
     public void render(Graphics g) {
         g.drawSprite(backGround);
+        g.drawString(String.valueOf(levelSettings.getCurrentLevel()), 20, 150);
         // Render ship
         ship.render(g);
         // Render projectiles
@@ -130,8 +136,10 @@ public class SpaceInvadersGame extends BasicGame {
 
     private void reactToKeyPresses() {
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            if (Gdx.graphics.isFullscreen())
-                Gdx.graphics.setWindowedMode(800, 600);
+            if (Gdx.graphics.isFullscreen()) {
+                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                Gdx.graphics.setWindowedMode(screenSize.width - 160, screenSize.height - 90);
+            }
             else {
                 Gdx.app.exit();
                 System.exit(0);
@@ -178,7 +186,7 @@ public class SpaceInvadersGame extends BasicGame {
         ArrayList<BasicEnemy> row = new ArrayList<BasicEnemy>();
         for (int i = 0; i < aliensPerRow; i++) {
             row.add(new Alien(alienSpacing * i + alienWidth * i,
-                    2 * rowIndex * alienHeight)
+                    2 * rowIndex * alienHeight, levelSettings.getEnemySpeed())
             );
         }
         return row;
@@ -249,11 +257,11 @@ public class SpaceInvadersGame extends BasicGame {
         Random rand = new Random();
         for (ArrayList<BasicEnemy> row : enemies) {
             if (row.size() > 0) {
-                int attackingEnemies = rand.nextInt(151);  // Bound is exclusive
-                attackingEnemies = attackingEnemies < 3 ? Math.min(attackingEnemies, row.size()) : 0;
+                int attackingEnemies = rand.nextInt(levelSettings.getAttackProbability() + levelSettings.getAttackersPerRow() + 1);  // Bound is exclusive
+                attackingEnemies = attackingEnemies <= levelSettings.getAttackersPerRow() ? Math.min(attackingEnemies, row.size()) : 0;
                 for (int i = 0; i < attackingEnemies; i++) {
                     int enemyIndex = rand.nextInt(row.size());
-                    row.get(enemyIndex).fireProjectile(enemyProjectiles, 2);
+                    row.get(enemyIndex).fireProjectile(enemyProjectiles, levelSettings.getProjectileSpeed());
                 }
             }
         }

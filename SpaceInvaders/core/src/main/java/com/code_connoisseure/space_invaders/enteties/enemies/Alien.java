@@ -11,9 +11,12 @@ public class Alien extends BasicEnemy {
     private static int sheetFrameWidth = 60;
     private static int sheetFrameHeight = 60;
     private static float animationDuration = 0.2f;
-    private static float speed = 5;
 
     public Alien(float x, float y) {
+        this(x, y, 5);
+    }
+
+    public Alien(float x, float y, float speed) {
         super(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, 1, speed, destructionSound);
     }
 }
