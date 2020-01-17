@@ -380,7 +380,7 @@ public abstract class AnimatedBoxGameObject {
     }
 
     /**
-     *
+     * Checks if the planned move is legal.
      * @param xDirection The x-direction the object should move in.
      * @param yDirection The y-direction the object should move in.
      * @return Returns whether or not the move is legal.
