@@ -2,6 +2,7 @@ package com.code_connoisseure.space_invaders.logic;
 
 public class LevelSettings {
     private int currentLevel;
+    private int enemyLives;
     private float enemySpeed;
     private float projectileSpeed;
     private int attackProbability;
@@ -22,6 +23,7 @@ public class LevelSettings {
     }
 
     private void updateSettings() {
+        enemyLives = currentLevel >= 15 ? currentLevel / 5 - 1 : 1;
         switch (currentLevel) {
             case 1:
                 enemySpeed = 3;
@@ -48,12 +50,14 @@ public class LevelSettings {
                 attackersPerRow = 1;
                 break;
             case 5:
+                enemyLives = 2;
                 enemySpeed = 7;
                 attackProbability = 180;
                 projectileSpeed = 3;
                 attackersPerRow = 1;
                 break;
             case 6:
+                enemyLives = 2;
                 enemySpeed = 7;
                 attackProbability = 180;
                 projectileSpeed = 3;
@@ -72,20 +76,29 @@ public class LevelSettings {
                 break;
             case 9:
                 enemySpeed = 7;
-                attackProbability = 150;
+                attackProbability = 160;
                 projectileSpeed = 7;
                 attackersPerRow = 3;
                 break;
+            case 10:
+                enemySpeed = 7;
+                attackProbability = 150;
+                projectileSpeed = 7;
+                attackersPerRow = 3;
             default:
                 enemySpeed = 7;
-                attackProbability = 130;
-                projectileSpeed = 8;
+                attackProbability = 165;
+                projectileSpeed = 7;
                 attackersPerRow = 3;
         }
     }
 
     public int getCurrentLevel() {
         return currentLevel;
+    }
+
+    public int getEnemyLives() {
+        return enemyLives;
     }
 
     public float getEnemySpeed() {

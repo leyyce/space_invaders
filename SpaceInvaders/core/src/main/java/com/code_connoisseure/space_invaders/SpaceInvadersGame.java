@@ -186,7 +186,7 @@ public class SpaceInvadersGame extends BasicGame {
         ArrayList<BasicEnemy> row = new ArrayList<BasicEnemy>();
         for (int i = 0; i < aliensPerRow; i++) {
             row.add(new Alien(alienSpacing * i + alienWidth * i,
-                    2 * rowIndex * alienHeight, levelSettings.getEnemySpeed())
+                    2 * rowIndex * alienHeight, levelSettings.getEnemyLives(), levelSettings.getEnemySpeed())
             );
         }
         return row;
