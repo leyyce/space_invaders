@@ -26,13 +26,13 @@ public class LevelSettings {
         enemyLives = currentLevel >= 15 ? currentLevel / 5 - 1 : 1;
         switch (currentLevel) {
             case 1:
-                enemySpeed = 3;
+                enemySpeed = 5;
                 attackProbability = 0;
                 projectileSpeed = 0;
                 attackersPerRow = 0;
                 break;
             case 2:
-                enemySpeed = 5;
+                enemySpeed = 6;
                 attackProbability = 0;
                 projectileSpeed = 0;
                 attackersPerRow = 0;
@@ -51,42 +51,42 @@ public class LevelSettings {
                 break;
             case 5:
                 enemyLives = 2;
-                enemySpeed = 7;
+                enemySpeed = 8;
                 attackProbability = 180;
                 projectileSpeed = 3;
                 attackersPerRow = 1;
                 break;
             case 6:
                 enemyLives = 2;
-                enemySpeed = 7;
+                enemySpeed = 8;
                 attackProbability = 180;
                 projectileSpeed = 3;
                 attackersPerRow = 2;
                 break;
             case 7:
-                enemySpeed = 7;
+                enemySpeed = 8;
                 attackProbability = 170;
                 projectileSpeed = 5;
                 attackersPerRow = 2;
             case 8:
-                enemySpeed = 7;
+                enemySpeed = 8;
                 attackProbability = 170;
                 projectileSpeed = 5;
                 attackersPerRow = 3;
                 break;
             case 9:
-                enemySpeed = 7;
+                enemySpeed = 8;
                 attackProbability = 160;
                 projectileSpeed = 7;
                 attackersPerRow = 3;
                 break;
             case 10:
-                enemySpeed = 7;
+                enemySpeed = 8;
                 attackProbability = 150;
                 projectileSpeed = 7;
                 attackersPerRow = 3;
             default:
-                enemySpeed = 7;
+                enemySpeed = 9;
                 attackProbability = 165;
                 projectileSpeed = 7;
                 attackersPerRow = 3;

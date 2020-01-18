@@ -35,8 +35,8 @@ public abstract class BasicEnemy extends AnimatedBoxGameObject {
         if (moveInBounds(moveRight ? Directions.RIGHT : Directions.LEFT, null))
             move(moveRight ? Directions.RIGHT : Directions.LEFT, null);
         else {
-            moveRight = !moveRight;
             move(null, Directions.DOWN);
+            moveRight = !moveRight;
         }
         objectAnimation.update(delta);
     }
@@ -44,7 +44,7 @@ public abstract class BasicEnemy extends AnimatedBoxGameObject {
     @Override
     protected boolean moveVert(Directions yDirection) {
         if (yDirection == Directions.DOWN) {
-            collisionBox.setY(collisionBox.getY() + collisionBox.getHeight());
+            collisionBox.forceTo(moveRight ? Gdx.graphics.getWidth() : 0 - collisionBox.getWidth(),collisionBox.getY() + collisionBox.getHeight());
             return true;
         }
         return false;
@@ -54,8 +54,8 @@ public abstract class BasicEnemy extends AnimatedBoxGameObject {
     protected boolean moveInBounds(Directions xDirection, Directions yDirection) {
         float x = collisionBox.getX();
         return (
-                xDirection == null ? x + collisionBox.getWidth() <= Gdx.graphics.getWidth() && x >= 0 : (
-                        xDirection == Directions.RIGHT ? x + collisionBox.getWidth() + speed <= Gdx.graphics.getWidth() : x - speed >= 0
+                xDirection == null ? x <= Gdx.graphics.getWidth() && x + collisionBox.getWidth() >= 0 : (
+                        xDirection == Directions.RIGHT ? x + speed <= Gdx.graphics.getWidth() : x  + collisionBox.getWidth() - speed >= 0
                 )
         );
     }
