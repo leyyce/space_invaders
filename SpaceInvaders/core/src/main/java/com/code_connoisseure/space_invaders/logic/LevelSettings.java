@@ -77,18 +77,18 @@ public class LevelSettings {
             case 9:
                 enemySpeed = 8;
                 attackProbability = 160;
-                projectileSpeed = 7;
+                projectileSpeed = 6;
                 attackersPerRow = 3;
                 break;
             case 10:
                 enemySpeed = 8;
                 attackProbability = 150;
-                projectileSpeed = 7;
+                projectileSpeed = 6;
                 attackersPerRow = 3;
             default:
                 enemySpeed = 9;
                 attackProbability = 165;
-                projectileSpeed = 7;
+                projectileSpeed = 6;
                 attackersPerRow = 3;
         }
     }
