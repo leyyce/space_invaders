@@ -150,6 +150,12 @@ public class SpaceInvadersGame extends BasicGame {
         windowBaseWidthDifference = Gdx.graphics.getHeight() - SpaceInvadersGame.BASE_GAME_HEIGHT;
     }
 
+    @Override
+    public void dispose() {
+        super.dispose();
+        Gdx.app.exit();
+    }
+
     private void reactToKeyPresses() {
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             if (Gdx.graphics.isFullscreen()) {
@@ -158,7 +164,8 @@ public class SpaceInvadersGame extends BasicGame {
             }
             else {
                 Gdx.app.exit();
-                System.exit(0);
+                // No longer needed because of config.forceExit=true
+                // System.exit(0);
             }
         }
 	    /* REMOVED BECAUSE YOU'RE ONLY SUPPOSED TO MOVE LEFT AND RIGHT
