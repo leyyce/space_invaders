@@ -3,6 +3,7 @@ package com.code_connoisseure.space_invaders.enteties.player_ships;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.code_connoisseure.space_invaders.SpaceInvadersGame;
 import com.code_connoisseure.space_invaders.enteties.AnimatedBoxGameObject;
 
 public abstract class PlayerShip extends AnimatedBoxGameObject {
@@ -56,10 +57,10 @@ public abstract class PlayerShip extends AnimatedBoxGameObject {
     }
 
     private static float _getCenterX(int sheetFrameWidth) {
-        return Gdx.graphics.getWidth() / 2f - sheetFrameWidth / 2f;
+        return SpaceInvadersGame.BASE_GAME_WIDTH / 2f - sheetFrameWidth / 2f;
     }
 
     private static float _getCenterY(int sheetFrameHeight) {
-        return Gdx.graphics.getHeight() - 20 - sheetFrameHeight;
+        return Gdx.graphics.getHeight() - SpaceInvadersGame.windowBaseHeightDifference - 10 - sheetFrameHeight;
     }
 }

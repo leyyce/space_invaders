@@ -3,6 +3,7 @@ package com.code_connoisseure.space_invaders.enteties;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.code_connoisseure.space_invaders.SpaceInvadersGame;
 import com.code_connoisseure.space_invaders.enteties.projectiles.DefaultLaser;
 import com.code_connoisseure.space_invaders.enteties.projectiles.Projectile;
 import org.mini2Dx.core.engine.geom.CollisionBox;
@@ -390,13 +391,13 @@ public abstract class AnimatedBoxGameObject {
         float y = collisionBox.getY();
 
         boolean inBoundsX =  (
-                xDirection == null ? x + collisionBox.getWidth() <= Gdx.graphics.getWidth() && x >= 0 : (
-                        xDirection == Directions.RIGHT ? x + collisionBox.getWidth() + speed <= Gdx.graphics.getWidth() : x - speed >= 0
+                xDirection == null ? x + collisionBox.getWidth() <= SpaceInvadersGame.BASE_GAME_WIDTH && x >= 0 : (
+                        xDirection == Directions.RIGHT ? x + collisionBox.getWidth() + speed <= SpaceInvadersGame.BASE_GAME_WIDTH : x - speed >= 0
                 )
         );
         boolean inBoundsY =  (
-                yDirection == null ? y + collisionBox.getHeight() <= Gdx.graphics.getHeight() && y >= 0 : (
-                        yDirection == Directions.DOWN ? y + collisionBox.getHeight() <= Gdx.graphics.getHeight() + speed : x - speed >= 0
+                yDirection == null ? y + collisionBox.getHeight() <= Gdx.graphics.getHeight() - SpaceInvadersGame.windowBaseHeightDifference && y >= 0 : (
+                        yDirection == Directions.DOWN ? y + collisionBox.getHeight() <=Gdx.graphics.getHeight() - SpaceInvadersGame.windowBaseHeightDifference + speed : x - speed >= 0
                 )
         );
 

@@ -3,6 +3,7 @@ package com.code_connoisseure.space_invaders.enteties.enemies;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.code_connoisseure.space_invaders.SpaceInvadersGame;
 import com.code_connoisseure.space_invaders.enteties.AnimatedBoxGameObject;
 import com.code_connoisseure.space_invaders.enteties.projectiles.Bomb;
 import com.code_connoisseure.space_invaders.enteties.projectiles.Projectile;
@@ -44,7 +45,7 @@ public abstract class BasicEnemy extends AnimatedBoxGameObject {
     @Override
     protected boolean moveVert(Directions yDirection) {
         if (yDirection == Directions.DOWN) {
-            collisionBox.forceTo(moveRight ? Gdx.graphics.getWidth() : 0 - collisionBox.getWidth(),collisionBox.getY() + collisionBox.getHeight());
+            collisionBox.forceTo(moveRight ? SpaceInvadersGame.BASE_GAME_WIDTH : 0 - collisionBox.getWidth(),collisionBox.getY() + collisionBox.getHeight());
             return true;
         }
         return false;
@@ -54,8 +55,8 @@ public abstract class BasicEnemy extends AnimatedBoxGameObject {
     protected boolean moveInBounds(Directions xDirection, Directions yDirection) {
         float x = collisionBox.getX();
         return (
-                xDirection == null ? x <= Gdx.graphics.getWidth() && x + collisionBox.getWidth() >= 0 : (
-                        xDirection == Directions.RIGHT ? x + speed <= Gdx.graphics.getWidth() : x  + collisionBox.getWidth() - speed >= 0
+                xDirection == null ? x <= Gdx.graphics.getWidth() - SpaceInvadersGame.BASE_GAME_WIDTH && x + collisionBox.getWidth() >= 0 : (
+                        xDirection == Directions.RIGHT ? x + speed <= SpaceInvadersGame.BASE_GAME_WIDTH : x  + collisionBox.getWidth() - speed >= 0
                 )
         );
     }
