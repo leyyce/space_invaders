@@ -116,7 +116,7 @@ public class SpaceInvadersGame extends BasicGame {
         // Render ammunition text
         int currentAmmunition = ship.getAmmunition();
         
-        g.drawString("Munition: " + currentAmmunition, 10, 20);
+        g.drawString("Ammunition: " + currentAmmunition, 300, 20);
     }
 
     private void reactToKeyPresses() {
