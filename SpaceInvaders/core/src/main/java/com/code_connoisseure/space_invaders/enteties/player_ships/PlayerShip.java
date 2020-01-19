@@ -11,6 +11,8 @@ import java.util.ArrayList;
 public abstract class PlayerShip extends AnimatedBoxGameObject {
 
     private int ammunition;
+
+
     public PlayerShip(Texture spriteSheet, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, float speed, int ammunition) {
         super(spriteSheet, _getCenterX(sheetFrameWidth), _getCenterY(sheetFrameHeight), sheetFrameWidth, sheetFrameHeight, animationDuration, true, speed);
         this.ammunition = ammunition;
@@ -54,10 +56,10 @@ public abstract class PlayerShip extends AnimatedBoxGameObject {
         }
         return false;
     }
-
+    @Override
     public void fireProjectile(ArrayList<Projectile> projectiles, float speed) {
         if(ammunition > 0){
-            projectiles.add(new DefaultLaser(collisionBox.getCenterX(), collisionBox.getY(), speed));
+            super.fireProjectile(projectiles, speed);
             ammunition--;
         }
     }

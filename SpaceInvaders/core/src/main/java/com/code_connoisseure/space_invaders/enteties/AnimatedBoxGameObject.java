@@ -108,6 +108,10 @@ public abstract class AnimatedBoxGameObject {
         return inBoundsX && inBoundsY;
     }
 
+    public void fireProjectile(ArrayList<Projectile> projectiles, float speed) {
+            projectiles.add(new DefaultLaser(collisionBox.getCenterX(), collisionBox.getY(), speed));
+    }
+
     // Setter and Getters
 
     public Texture getCurrentTextureFrame() {
