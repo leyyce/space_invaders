@@ -1,18 +1,32 @@
 package com.code_connoisseure.space_invaders.enteties.enemies;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.code_connoisseure.space_invaders.SpaceInvadersGame;
 import com.code_connoisseure.space_invaders.enteties.AnimatedBoxGameObject;
 import com.code_connoisseure.space_invaders.enteties.projectiles.Bomb;
 import com.code_connoisseure.space_invaders.enteties.projectiles.Projectile;
 
 import java.util.ArrayList;
 
-public class BasicEnemy extends AnimatedBoxGameObject {
+public abstract class BasicEnemy extends AnimatedBoxGameObject {
     private boolean moveRight = true;
 
     public BasicEnemy(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, float speed) {
-        super(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, true, speed);
+        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, 1, speed);
+    }
+
+    public BasicEnemy(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, int lives, float speed) {
+        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, lives, speed, null);
+    }
+
+    public BasicEnemy(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, int lives, float speed, Sound destructionSound) {
+        this(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, lives, speed, destructionSound, null);
+    }
+
+    public BasicEnemy(Texture spriteSheet, float x, float y, int sheetFrameWidth, int sheetFrameHeight, float animationDuration, int lives, float speed, Sound destructionSound, Sound damageSound) {
+        super(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration,true,  lives, speed, destructionSound, damageSound);
     }
 
     @Override
@@ -22,8 +36,8 @@ public class BasicEnemy extends AnimatedBoxGameObject {
         if (moveInBounds(moveRight ? Directions.RIGHT : Directions.LEFT, null))
             move(moveRight ? Directions.RIGHT : Directions.LEFT, null);
         else {
-            moveRight = !moveRight;
             move(null, Directions.DOWN);
+            moveRight = !moveRight;
         }
         objectAnimation.update(delta);
     }
@@ -31,7 +45,7 @@ public class BasicEnemy extends AnimatedBoxGameObject {
     @Override
     protected boolean moveVert(Directions yDirection) {
         if (yDirection == Directions.DOWN) {
-            collisionBox.setY(collisionBox.getY() + collisionBox.getHeight());
+            collisionBox.forceTo(moveRight ? SpaceInvadersGame.BASE_GAME_WIDTH : 0 - collisionBox.getWidth(),collisionBox.getY() + collisionBox.getHeight());
             return true;
         }
         return false;
@@ -41,14 +55,16 @@ public class BasicEnemy extends AnimatedBoxGameObject {
     protected boolean moveInBounds(Directions xDirection, Directions yDirection) {
         float x = collisionBox.getX();
         return (
-                xDirection == null ? x + collisionBox.getWidth() <= Gdx.graphics.getWidth() && x >= 0 : (
-                        xDirection == Directions.RIGHT ? x + collisionBox.getWidth() + speed <= Gdx.graphics.getWidth() : x - speed >= 0
+                xDirection == null ? x <= Gdx.graphics.getWidth() - SpaceInvadersGame.BASE_GAME_WIDTH && x + collisionBox.getWidth() >= 0 : (
+                        xDirection == Directions.RIGHT ? x + speed <= SpaceInvadersGame.BASE_GAME_WIDTH : x  + collisionBox.getWidth() - speed >= 0
                 )
         );
     }
 
     @Override
-    public void fireProjectile(ArrayList<Projectile> projectiles, float speed) {
+    public boolean fireProjectile(ArrayList<Projectile> projectiles, float speed) {
+        if (!alive()) return false;
         projectiles.add(new Bomb(collisionBox.getCenterX(), collisionBox.getY(), speed));
+        return true;
     }
 }
