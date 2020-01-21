@@ -14,6 +14,7 @@ import com.code_connoisseure.space_invaders.enteties.projectiles.Projectile;
 import com.code_connoisseure.space_invaders.logic.LevelSettings;
 import com.code_connoisseure.space_invaders.music.PlayList;
 import com.code_connoisseure.space_invaders.ui.HealthBar;
+import com.code_connoisseure.space_invaders.ui.Score;
 import org.mini2Dx.core.game.BasicGame;
 import org.mini2Dx.core.graphics.Graphics;
 
@@ -31,6 +32,7 @@ public class SpaceInvadersGame extends BasicGame {
 
     private StretchViewport viewport;
     private LevelSettings levelSettings;
+    private Score score;
     private Sprite backGround;
     private HealthBar healthBar;
     private PlayerShip ship;
@@ -45,6 +47,7 @@ public class SpaceInvadersGame extends BasicGame {
         windowBaseWidthDifference = Gdx.graphics.getHeight() - SpaceInvadersGame.BASE_GAME_HEIGHT;
         viewport = new StretchViewport(BASE_GAME_WIDTH, BASE_GAME_HEIGHT);
         levelSettings = new LevelSettings();
+        score = new Score();
         backGround = createScaledSprite(new Texture(Gdx.files.internal("backgrounds/background_2_4k.jpg")));
         ship = new DefaultShip();
         healthBar = new HealthBar(ship, 0, 0);
@@ -124,6 +127,7 @@ public class SpaceInvadersGame extends BasicGame {
         viewport.apply(g);
         g.drawSprite(backGround);
         g.drawString(String.valueOf(levelSettings.getCurrentLevel()), 20, 150);
+        g.drawString(String.format("Score: %d", score.getScore()), 20, 175);
         // Render ship
         ship.render(g);
         // Render projectiles
@@ -218,8 +222,10 @@ public class SpaceInvadersGame extends BasicGame {
     private void clearOffScreenProjectiles() {
         ArrayList<Projectile> remove = new ArrayList<Projectile>();
         for (Projectile p : projectiles) {
-            if (p.getY() + p.getHeight() < 0 || p.getY() > Gdx.graphics.getHeight() - windowBaseHeightDifference)
+            if (p.getY() + p.getHeight() < 0 || p.getY() > Gdx.graphics.getHeight() - windowBaseHeightDifference) {
                 remove.add(p);
+                score.decreaseScore(10);
+            }
         }
         projectiles.removeAll(remove);
         remove = new ArrayList<Projectile>();
@@ -243,24 +249,41 @@ public class SpaceInvadersGame extends BasicGame {
     }
 
     private void checkForEnemyHits() {
-        ArrayList<BasicEnemy> aliensToRemove;
+        ArrayList<BasicEnemy> enemiesToRemove;
         ArrayList<Projectile> projectilesToRemove = new ArrayList<Projectile>();
         for (Projectile p : projectiles) {
             for (ArrayList<BasicEnemy> row : enemies) {
-                aliensToRemove = new ArrayList<BasicEnemy>();
+                enemiesToRemove = new ArrayList<BasicEnemy>();
                 for (BasicEnemy e : row) {
                     if (e.contains(p.getCollisionBox())) {
                         p.damageObject();
                         if (!p.alive()) projectilesToRemove.add(p);
-                        // TODO Find good sounding explosion
                         e.damageObject();
-                        if (!e.alive()) aliensToRemove.add(e);
+                        if (!e.alive()) {
+                            enemiesToRemove.add(e);
+                            score.increaseScore(50);
+                        }
                     }
                 }
-                row.removeAll(aliensToRemove);
+                row.removeAll(enemiesToRemove);
             }
         }
         projectiles.removeAll(projectilesToRemove);
+
+        for (ArrayList<BasicEnemy> row : enemies) {
+            enemiesToRemove = new ArrayList<BasicEnemy>();
+            for (BasicEnemy e : row) {
+                if (ship.intersects(e.getCollisionBox())) {
+                    if (healthBar.shipAlive()) {
+                        healthBar.damageShip();
+                        score.decreaseScore(250);
+                        e.damageObject();
+                    }
+                    if (!e.alive()) enemiesToRemove.add(e);
+                }
+            }
+            row.removeAll(enemiesToRemove);
+        }
     }
 
     private void checkForPlayerHits() {
@@ -268,7 +291,7 @@ public class SpaceInvadersGame extends BasicGame {
         for (Projectile p : enemyProjectiles) {
             if (ship.contains(p.getCollisionBox())) {
                 healthBar.damageShip();
-                // ship = new DefaultShip();
+                if (healthBar.shipAlive()) score.decreaseScore(150);
                 p.damageObject();
                 if (!p.alive()) projectilesToRemove.add(p);
             }
