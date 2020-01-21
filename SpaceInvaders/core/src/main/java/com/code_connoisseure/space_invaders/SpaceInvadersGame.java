@@ -1,5 +1,6 @@
 package com.code_connoisseure.space_invaders;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -10,33 +11,55 @@ import com.code_connoisseure.space_invaders.enteties.AnimatedBoxGameObject;
 import com.code_connoisseure.space_invaders.enteties.enemies.BasicEnemy;
 import com.code_connoisseure.space_invaders.enteties.player_ships.PlayerShip;
 import com.code_connoisseure.space_invaders.enteties.projectiles.Projectile;
+import com.code_connoisseure.space_invaders.logic.LevelSettings;
+import com.code_connoisseure.space_invaders.music.PlayList;
+import com.code_connoisseure.space_invaders.ui.HealthBar;
 import org.mini2Dx.core.game.BasicGame;
 import org.mini2Dx.core.graphics.Graphics;
 
 import com.code_connoisseure.space_invaders.enteties.enemies.Alien;
 import com.code_connoisseure.space_invaders.enteties.player_ships.DefaultShip;
 import org.mini2Dx.core.graphics.Sprite;
+import org.mini2Dx.core.graphics.viewport.StretchViewport;
 
 public class SpaceInvadersGame extends BasicGame {
     public static final String GAME_IDENTIFIER = "com.code_connoisseure.space_invaders";
+    public static final int BASE_GAME_WIDTH = 1920;
+    public static final int BASE_GAME_HEIGHT = 1080;
+    public static int windowBaseWidthDifference;
+    public static int windowBaseHeightDifference;
 
+    private StretchViewport viewport;
+    private LevelSettings levelSettings;
     private Sprite backGround;
+    private HealthBar healthBar;
     private PlayerShip ship;
     private ArrayList<ArrayList<BasicEnemy>> enemies;
     private ArrayList<Projectile> projectiles;
     private ArrayList<Projectile> enemyProjectiles;
+    private PlayList playList;
 
     @Override
     public void initialise() {
-        backGround = new Sprite(new Texture("backgrounds/background.png"));
+        windowBaseHeightDifference = Gdx.graphics.getHeight() - SpaceInvadersGame.BASE_GAME_HEIGHT;
+        windowBaseWidthDifference = Gdx.graphics.getHeight() - SpaceInvadersGame.BASE_GAME_HEIGHT;
+        viewport = new StretchViewport(BASE_GAME_WIDTH, BASE_GAME_HEIGHT);
+        levelSettings = new LevelSettings();
+        backGround = createScaledSprite(new Texture(Gdx.files.internal("backgrounds/background_2_4k.jpg")));
         ship = new DefaultShip();
+        healthBar = new HealthBar(ship, 0, 0);
         enemies = generateAliens();
         projectiles = new ArrayList<Projectile>();
         enemyProjectiles = new ArrayList<Projectile>();
+        playList = new PlayList(Gdx.audio.newMusic(Gdx.files.internal("music/out_of_space.mp3")));
+        playList.shufflePlay();
     }
 
     @Override
     public void update(float delta) {
+        healthBar.update(delta);
+        // Update playlist
+        playList.update(delta);
         // Update ship
         ship.update(delta);
         // Update projectiles
@@ -54,7 +77,7 @@ public class SpaceInvadersGame extends BasicGame {
             }
         }
 
-        checkForAlienHits();
+        checkForEnemyHits();
         checkForPlayerHits();
         clearOffScreenProjectiles();
         clearOffScreenAliens();
@@ -68,13 +91,16 @@ public class SpaceInvadersGame extends BasicGame {
                 break;
             }
         }
-        if (allRowsEmpty)
+        if (allRowsEmpty) {
+            levelSettings.increaseLevel();
             enemies = generateAliens();
+        }
         // ----------------------------------------------------------
     }
 
     @Override
     public void interpolate(float alpha) {
+        healthBar.interpolate(alpha);
         // Interpolate ship
         ship.interpolate(alpha);
         // Interpolate projectiles
@@ -95,7 +121,9 @@ public class SpaceInvadersGame extends BasicGame {
 
     @Override
     public void render(Graphics g) {
+        viewport.apply(g);
         g.drawSprite(backGround);
+        g.drawString(String.valueOf(levelSettings.getCurrentLevel()), 20, 150);
         // Render ship
         ship.render(g);
         // Render projectiles
@@ -112,15 +140,32 @@ public class SpaceInvadersGame extends BasicGame {
                 alien.render(g);
             }
         }
+        // Render Health Bar
+        healthBar.render(g);
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        windowBaseHeightDifference = Gdx.graphics.getHeight() - SpaceInvadersGame.BASE_GAME_HEIGHT;
+        windowBaseWidthDifference = Gdx.graphics.getHeight() - SpaceInvadersGame.BASE_GAME_HEIGHT;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        Gdx.app.exit();
     }
 
     private void reactToKeyPresses() {
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            if (Gdx.graphics.isFullscreen())
-                Gdx.graphics.setWindowedMode(800, 600);
+            if (Gdx.graphics.isFullscreen()) {
+                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                Gdx.graphics.setWindowedMode(screenSize.width - 160, screenSize.height - 90);
+            }
             else {
                 Gdx.app.exit();
-                System.exit(0);
+                // No longer needed because of config.forceExit=true
+                // System.exit(0);
             }
         }
 	    /* REMOVED BECAUSE YOU'RE ONLY SUPPOSED TO MOVE LEFT AND RIGHT
@@ -144,8 +189,8 @@ public class SpaceInvadersGame extends BasicGame {
         float alienWidth = alien.getWidth();
         float alienHeight = alien.getHeight();
         float shipHeight = ship.getHeight();
-        float availableSpaceX = Gdx.graphics.getWidth() - 2 * alienWidth;
-        float availableSpaceY = Gdx.graphics.getHeight() - 3 * alienHeight - shipHeight;
+        float availableSpaceX = BASE_GAME_WIDTH - 2 * alienWidth;
+        float availableSpaceY = BASE_GAME_HEIGHT - 3 * alienHeight - shipHeight;
         int numberAlienX = (int) Math.floor(availableSpaceX / (2 * alienWidth));
         int numberAlienY = (int) Math.floor(availableSpaceY / (2 * alienHeight));
 
@@ -164,7 +209,7 @@ public class SpaceInvadersGame extends BasicGame {
         ArrayList<BasicEnemy> row = new ArrayList<BasicEnemy>();
         for (int i = 0; i < aliensPerRow; i++) {
             row.add(new Alien(alienSpacing * i + alienWidth * i,
-                    2 * rowIndex * alienHeight)
+                    2 * rowIndex * alienHeight, levelSettings.getEnemyLives(), levelSettings.getEnemySpeed())
             );
         }
         return row;
@@ -173,13 +218,13 @@ public class SpaceInvadersGame extends BasicGame {
     private void clearOffScreenProjectiles() {
         ArrayList<Projectile> remove = new ArrayList<Projectile>();
         for (Projectile p : projectiles) {
-            if (p.getY() + p.getHeight() < 0 || p.getY() > Gdx.graphics.getHeight())
+            if (p.getY() + p.getHeight() < 0 || p.getY() > Gdx.graphics.getHeight() - windowBaseHeightDifference)
                 remove.add(p);
         }
         projectiles.removeAll(remove);
         remove = new ArrayList<Projectile>();
         for (Projectile p : enemyProjectiles) {
-            if (p.getY() + p.getHeight() < 0 || p.getY() > Gdx.graphics.getHeight())
+            if (p.getY() + p.getHeight() < 0 || p.getY() > Gdx.graphics.getHeight() - windowBaseHeightDifference)
                 remove.add(p);
         }
         enemyProjectiles.removeAll(remove);
@@ -190,23 +235,26 @@ public class SpaceInvadersGame extends BasicGame {
         for (ArrayList<BasicEnemy> row : enemies) {
             remove = new ArrayList<BasicEnemy>();
             for (BasicEnemy a : row) {
-                if (a.getY() >= Gdx.graphics.getHeight())
+                if (a.getY() >= Gdx.graphics.getHeight() - windowBaseHeightDifference)
                     remove.add(a);
             }
             row.removeAll(remove);
         }
     }
 
-    private void checkForAlienHits() {
+    private void checkForEnemyHits() {
         ArrayList<BasicEnemy> aliensToRemove;
         ArrayList<Projectile> projectilesToRemove = new ArrayList<Projectile>();
         for (Projectile p : projectiles) {
             for (ArrayList<BasicEnemy> row : enemies) {
                 aliensToRemove = new ArrayList<BasicEnemy>();
-                for (BasicEnemy a : row) {
-                    if (a.contains(p.getCollisionBox())) {
-                        projectilesToRemove.add(p);
-                        aliensToRemove.add(a);
+                for (BasicEnemy e : row) {
+                    if (e.contains(p.getCollisionBox())) {
+                        p.damageObject();
+                        if (!p.alive()) projectilesToRemove.add(p);
+                        // TODO Find good sounding explosion
+                        e.damageObject();
+                        if (!e.alive()) aliensToRemove.add(e);
                     }
                 }
                 row.removeAll(aliensToRemove);
@@ -219,8 +267,10 @@ public class SpaceInvadersGame extends BasicGame {
         ArrayList<Projectile> projectilesToRemove = new ArrayList<Projectile>();
         for (Projectile p : enemyProjectiles) {
             if (ship.contains(p.getCollisionBox())) {
-                ship = new DefaultShip();
-                projectilesToRemove.add(p);
+                healthBar.damageShip();
+                // ship = new DefaultShip();
+                p.damageObject();
+                if (!p.alive()) projectilesToRemove.add(p);
             }
         }
         enemyProjectiles.removeAll(projectilesToRemove);
@@ -230,13 +280,23 @@ public class SpaceInvadersGame extends BasicGame {
         Random rand = new Random();
         for (ArrayList<BasicEnemy> row : enemies) {
             if (row.size() > 0) {
-                int attackingEnemies = rand.nextInt(151);  // Bound is exclusive
-                attackingEnemies = attackingEnemies < 3 ? Math.min(attackingEnemies, row.size()) : 0;
+                int attackingEnemies = rand.nextInt(levelSettings.getAttackProbability() + levelSettings.getAttackersPerRow() + 1);  // Bound is exclusive
+                attackingEnemies = attackingEnemies <= levelSettings.getAttackersPerRow() ? Math.min(attackingEnemies, row.size()) : 0;
                 for (int i = 0; i < attackingEnemies; i++) {
                     int enemyIndex = rand.nextInt(row.size());
-                    row.get(enemyIndex).fireProjectile(enemyProjectiles, 2);
+                    row.get(enemyIndex).fireProjectile(enemyProjectiles, levelSettings.getProjectileSpeed());
                 }
             }
         }
+    }
+
+    private static Sprite createScaledSprite(Texture texture) {
+        float SCALE_RATIO = (float) texture.getWidth() / BASE_GAME_WIDTH;
+        Sprite sprite = new Sprite(texture);
+        sprite.getTexture().setFilter(Texture.TextureFilter.Linear,
+                Texture.TextureFilter.Linear);
+        sprite.setSize(sprite.getWidth() / SCALE_RATIO,
+                sprite.getHeight() / SCALE_RATIO);
+        return sprite;
     }
 }
