@@ -25,6 +25,14 @@ public class SpaceInvadersGame extends BasicGame {
     private ArrayList<ArrayList<BasicEnemy>> enemies;
     private ArrayList<Projectile> projectiles;
     private ArrayList<Projectile> enemyProjectiles;
+    private Menu menu;
+
+    public enum STATE{
+        MENU,
+        GAME
+    }
+
+    public static STATE State = STATE.MENU;
 
     @Override
     public void initialise() {
@@ -33,24 +41,30 @@ public class SpaceInvadersGame extends BasicGame {
         enemies = generateAliens();
         projectiles = new ArrayList<Projectile>();
         enemyProjectiles = new ArrayList<Projectile>();
+        menu = new Menu();
+
+
     }
+
 
     @Override
     public void update(float delta) {
-        // Update ship
-        ship.update(delta);
-        // Update projectiles
-        for (Projectile p : projectiles) {
-            p.update(delta);
-        }
-        // Update enemy projectiles
-        for (Projectile p : enemyProjectiles) {
-            p.update(delta);
-        }
-        // Update enemies
-        for (ArrayList<BasicEnemy> row: enemies) {
-            for(BasicEnemy alien: row) {
-                alien.update(delta);
+        if (State== STATE.GAME) {
+            // Update ship
+            ship.update(delta);
+            // Update projectiles
+            for (Projectile p : projectiles) {
+                p.update(delta);
+            }
+            // Update enemy projectiles
+            for (Projectile p : enemyProjectiles) {
+                p.update(delta);
+            }
+            // Update enemies
+            for (ArrayList<BasicEnemy> row : enemies) {
+                for (BasicEnemy alien : row) {
+                    alien.update(delta);
+                }
             }
         }
 
@@ -96,45 +110,52 @@ public class SpaceInvadersGame extends BasicGame {
     @Override
     public void render(Graphics g) {
         g.drawSprite(backGround);
-        // Render ship
-        ship.render(g);
-        // Render projectiles
-        for (Projectile p : projectiles) {
-            p.render(g);
-        }
-        // Render enemy projectiles
-        for (Projectile p : enemyProjectiles) {
-            p.render(g);
-        }
-        // Render enemies
-        for (ArrayList<BasicEnemy> row : enemies) {
-            for(BasicEnemy alien: row){
-                alien.render(g);
+        if(State == STATE.GAME) {
+            // Render ship
+            ship.render(g);
+            // Render projectiles
+            for (Projectile p : projectiles) {
+                p.render(g);
             }
+            // Render enemy projectiles
+            for (Projectile p : enemyProjectiles) {
+                p.render(g);
+            }
+            // Render enemies
+            for (ArrayList<BasicEnemy> row : enemies) {
+                for (BasicEnemy alien : row) {
+                    alien.render(g);
+                }
+            }
+        }
+        else if(State == STATE.MENU){
+            menu.render(g);
         }
     }
 
     private void reactToKeyPresses() {
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            if (Gdx.graphics.isFullscreen())
-                Gdx.graphics.setWindowedMode(800, 600);
-            else {
-                Gdx.app.exit();
-                System.exit(0);
+        if(State == STATE.GAME) {
+            if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+                if (Gdx.graphics.isFullscreen())
+                    Gdx.graphics.setWindowedMode(800, 600);
+                else {
+                    Gdx.app.exit();
+                    System.exit(0);
+                }
             }
-        }
 	    /* REMOVED BECAUSE YOU'RE ONLY SUPPOSED TO MOVE LEFT AND RIGHT
 	    if (Gdx.input.isKeyPressed(Input.Keys.UP))
 	        ship.moveVert(-5);
 	    if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
 	        ship.moveVert(5);
 	     */
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
-            ship.move(AnimatedBoxGameObject.Directions.LEFT, null);
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
-            ship.move(AnimatedBoxGameObject.Directions.RIGHT, null);
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
-            ship.fireProjectile(projectiles, 7);
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
+                ship.move(AnimatedBoxGameObject.Directions.LEFT, null);
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+                ship.move(AnimatedBoxGameObject.Directions.RIGHT, null);
+            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
+                ship.fireProjectile(projectiles, 7);
+        }
     }
 
     private ArrayList<ArrayList<BasicEnemy>> generateAliens() {

@@ -20,5 +20,6 @@ public class DesktopLauncher {
 		config.height = config.fullscreen ? screenSize.height : screenSize.height - 100;
 		config.targetFPS = 60;
 		new DesktopMini2DxGame(new SpaceInvadersGame(), config);
+
 	}
 }
