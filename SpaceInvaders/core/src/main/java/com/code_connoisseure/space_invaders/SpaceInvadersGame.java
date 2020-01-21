@@ -126,7 +126,7 @@ public class SpaceInvadersGame extends BasicGame {
     public void render(Graphics g) {
         viewport.apply(g);
         g.drawSprite(backGround);
-        g.drawString(String.valueOf(levelSettings.getCurrentLevel()), 20, 150);
+        g.drawString(String.format("Stage: %d", levelSettings.getCurrentLevel()), 20, 150);
         g.drawString(String.format("Score: %d", score.getScore()), 20, 175);
         // Render ship
         ship.render(g);
