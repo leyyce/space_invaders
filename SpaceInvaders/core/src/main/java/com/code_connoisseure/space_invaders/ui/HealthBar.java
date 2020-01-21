@@ -11,7 +11,7 @@ public class HealthBar {
     private float x;
     private float y;
     private int spacing = 20;
-    ArrayList<PlayerShip> healthAsShips = new ArrayList<PlayerShip>();
+    private ArrayList<PlayerShip> healthAsShips = new ArrayList<PlayerShip>();
 
     public HealthBar(PlayerShip shipToTrack, float x, float y) {
         this.trackedShip = shipToTrack;
@@ -43,6 +43,14 @@ public class HealthBar {
             return true;
         }
         return false;
+    }
+
+    public int getLives() {
+        return trackedShip.getLives();
+    }
+
+    public boolean shipAlive() {
+        return trackedShip.alive();
     }
 
     public void update(float delta) {

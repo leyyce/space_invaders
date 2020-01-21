@@ -291,6 +291,15 @@ public abstract class AnimatedBoxGameObject {
     }
 
     /**
+     * Checks if a given shape is intersects the object.
+     * @param shape The shape that should be checked.
+     * @return Returns whether or not the shape intersects the object.
+     */
+    public boolean intersects(Shape shape) {
+        return collisionBox.intersects(shape);
+    }
+
+    /**
      * Moves the object in the given x-direction if the move is legal as defined by moveInBounds.
      * @param direction The x-direction the object should move in.
      * @return Returns whether or not the the move was successful.
