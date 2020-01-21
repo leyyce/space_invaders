@@ -27,6 +27,7 @@ public class SpaceInvadersGame extends BasicGame {
     private ArrayList<Projectile> enemyProjectiles;
     private Menu menu;
 
+
     public enum STATE{
         MENU,
         GAME
@@ -42,7 +43,8 @@ public class SpaceInvadersGame extends BasicGame {
         projectiles = new ArrayList<Projectile>();
         enemyProjectiles = new ArrayList<Projectile>();
         menu = new Menu();
-
+        MouseInput inputProcessor = new MouseInput();
+        Gdx.input.setInputProcessor(inputProcessor);
 
     }
 
