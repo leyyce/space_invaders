@@ -23,6 +23,12 @@ import com.code_connoisseure.space_invaders.enteties.player_ships.DefaultShip;
 import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.core.graphics.viewport.StretchViewport;
 
+/**
+ * This class represents the main game and contains all the game logic.
+ * Rendering and updating onscreen objects and stuff like that will all be done here.
+ *
+ * @author Yannic Wehner
+ */
 public class SpaceInvadersGame extends BasicGame {
     /**
      * The identifier of the game. Used by mini2Dx.
@@ -60,7 +66,7 @@ public class SpaceInvadersGame extends BasicGame {
     private LevelSettings levelSettings;
 
     /**
-     * Contains the current player point score.
+     * Contains the current players point score.
      */
     private Score score;
 
@@ -80,7 +86,7 @@ public class SpaceInvadersGame extends BasicGame {
     private PlayerShip ship;
 
     /**
-     * A list of lists containing the enemies sorted by rows.
+     * A list of lists containing the enemies grouped by rows.
      */
     private ArrayList<ArrayList<BasicEnemy>> enemies;
 
@@ -154,7 +160,7 @@ public class SpaceInvadersGame extends BasicGame {
         clearOffScreenAliens();
         reactToKeyPresses();
         enemyAttacks();
-        // FOR TESTING ONLY: Make aliens respawn if all are cleared
+        // Make aliens respawn if all are cleared
         boolean allRowsEmpty = true;
         for (ArrayList<BasicEnemy> row : enemies) {
             if (row.size() != 0) {
@@ -320,7 +326,7 @@ public class SpaceInvadersGame extends BasicGame {
     }
 
     /**
-     * This method clears all the projectiles who have left the visible play area.
+     * This method clears all the projectiles that have left the visible play area.
      */
     private void clearOffScreenProjectiles() {
         ArrayList<Projectile> remove = new ArrayList<Projectile>();
@@ -340,7 +346,7 @@ public class SpaceInvadersGame extends BasicGame {
     }
 
     /**
-     * This method removes the aliens who have left the visible play area.
+     * This method removes the aliens which have left the visible play area.
      */
     private void clearOffScreenAliens() {
         ArrayList<BasicEnemy> remove;

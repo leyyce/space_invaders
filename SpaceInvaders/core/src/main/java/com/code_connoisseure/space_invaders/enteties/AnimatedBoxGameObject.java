@@ -42,7 +42,14 @@ public abstract class AnimatedBoxGameObject {
      */
     protected Sound damageSound;
 
+    /**
+     * The width of a single animation frame on the sprite sheet.
+     */
     protected int sheetFrameWidth;
+
+    /**
+     * The height of a single animation frame on the sprite sheet.
+     */
     protected int sheetFrameHeight;
 
     /**
@@ -255,7 +262,7 @@ public abstract class AnimatedBoxGameObject {
     }
 
     /**
-     *
+     * This method will add a new projectile to the given projectiles container ('fire it').
      * @param projectiles Projectile container to which the new projectile will be added.
      * @param speed The amount of pixels the projectile moves with each call of the move method.
      * @return Returns whether or not the projectile was successfully added to the projectiles container.
