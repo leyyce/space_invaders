@@ -464,10 +464,16 @@ public abstract class AnimatedBoxGameObject {
         return lives;
     }
 
+    /**
+     * @return Returns the width of a single animation frame on the sprite sheet in pixels
+     */
     public int getSheetFrameWidth() {
         return sheetFrameWidth;
     }
 
+    /**
+     * @return Returns the height of a single animation frame on the sprite sheet in pixels
+     */
     public int getSheetFrameHeight() {
         return sheetFrameHeight;
     }

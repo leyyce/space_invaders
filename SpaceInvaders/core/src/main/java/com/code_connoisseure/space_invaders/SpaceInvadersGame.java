@@ -24,23 +24,86 @@ import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.core.graphics.viewport.StretchViewport;
 
 public class SpaceInvadersGame extends BasicGame {
+    /**
+     * The identifier of the game. Used by mini2Dx.
+     */
     public static final String GAME_IDENTIFIER = "com.code_connoisseure.space_invaders";
+
+    /**
+     * The base game width from which the game will be scaled.
+     */
     public static final int BASE_GAME_WIDTH = 1920;
+
+    /**
+     * The base game height from which the game will be scaled.
+     */
     public static final int BASE_GAME_HEIGHT = 1080;
+
+    /**
+     * The difference between the actual window width and the base width.
+     */
     public static int windowBaseWidthDifference;
+
+    /**
+     * The difference between the actual window height and the base height.
+     */
     public static int windowBaseHeightDifference;
 
+    /**
+     * Contains the viewport of the game. Used for scaling.
+     */
     private StretchViewport viewport;
+
+    /**
+     * Contains and keeps track of level settings for the game, like enemy health or speed.
+     */
     private LevelSettings levelSettings;
+
+    /**
+     * Contains the current player point score.
+     */
     private Score score;
+
+    /**
+     * The background image.
+     */
     private Sprite backGround;
+
+    /**
+     * The health bar displays and keeps track of the current player lives left.
+     */
     private HealthBar healthBar;
+
+    /**
+     * The player ship.
+     */
     private PlayerShip ship;
+
+    /**
+     * A list of lists containing the enemies sorted by rows.
+     */
     private ArrayList<ArrayList<BasicEnemy>> enemies;
+
+    /**
+     * A list containing all player projectiles that exist at the moment.
+     */
     private ArrayList<Projectile> projectiles;
+
+    /**
+     * A list containing all the enemy projectiles that exist at the moment.
+     */
     private ArrayList<Projectile> enemyProjectiles;
+
+    /**
+     * A playlist containing the background music.
+     */
     private PlayList playList;
 
+    /**
+     * This is run when the game starts and is only called once. Here you'll create any required objects and load any
+     * resources needed for your game. After the initialise method is finished, the update, interpolate and render
+     * methods are called continuously until the game ends.
+     */
     @Override
     public void initialise() {
         windowBaseHeightDifference = Gdx.graphics.getHeight() - SpaceInvadersGame.BASE_GAME_HEIGHT;
@@ -48,7 +111,7 @@ public class SpaceInvadersGame extends BasicGame {
         viewport = new StretchViewport(BASE_GAME_WIDTH, BASE_GAME_HEIGHT);
         levelSettings = new LevelSettings();
         score = new Score();
-        backGround = createScaledSprite(new Texture(Gdx.files.internal("backgrounds/background_2_4k.jpg")));
+        backGround = scaleBackground(new Texture(Gdx.files.internal("backgrounds/background_2_4k.jpg")));
         ship = new DefaultShip();
         healthBar = new HealthBar(ship, 0, 0);
         enemies = generateAliens();
@@ -58,6 +121,11 @@ public class SpaceInvadersGame extends BasicGame {
         playList.shufflePlay();
     }
 
+    /**
+     * This is where your game will apply game logic, update animations, change background music, etc.
+     * @param delta The variable called 'delta' is provided and represents the amount of time in seconds to advance
+     *              game logic. By default delta is 0.1 seconds.
+     */
     @Override
     public void update(float delta) {
         healthBar.update(delta);
@@ -101,6 +169,11 @@ public class SpaceInvadersGame extends BasicGame {
         // ----------------------------------------------------------
     }
 
+    /**
+     * This is where your game calculates the render coordinates of your sprites.
+     * @param alpha The variable 'alpha' will be between 0.0 and 1.0, representing how much of an update to simulate,
+     *              i.e. 0.5 means it is halfway through an update.
+     */
     @Override
     public void interpolate(float alpha) {
         healthBar.interpolate(alpha);
@@ -122,6 +195,11 @@ public class SpaceInvadersGame extends BasicGame {
         }
     }
 
+    /**
+     * This is where you'll draw you game to the screen.
+     * @param g Provided by mini2Dx.
+     *          Common interface to graphics rendering functionality.
+     */
     @Override
     public void render(Graphics g) {
         viewport.apply(g);
@@ -148,18 +226,29 @@ public class SpaceInvadersGame extends BasicGame {
         healthBar.render(g);
     }
 
+    /**
+     * This method gets called every time the game  window is resized.
+     * @param width The new window width. This value is provided automatically
+     * @param height The new window height. This value is provided automatically.
+     */
     @Override
     public void resize(int width, int height) {
         windowBaseHeightDifference = Gdx.graphics.getHeight() - SpaceInvadersGame.BASE_GAME_HEIGHT;
         windowBaseWidthDifference = Gdx.graphics.getHeight() - SpaceInvadersGame.BASE_GAME_HEIGHT;
     }
 
+    /**
+     * This method is called when the game is closed.
+     */
     @Override
     public void dispose() {
         super.dispose();
         Gdx.app.exit();
     }
 
+    /**
+     * This method will react to all the key presses and update the game state accordingly.
+     */
     private void reactToKeyPresses() {
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             if (Gdx.graphics.isFullscreen()) {
@@ -186,6 +275,10 @@ public class SpaceInvadersGame extends BasicGame {
             ship.fireProjectile(projectiles, 7);
     }
 
+    /**
+     * This method generates a new alien cluster.
+     * @return Returns a list containing all the alien rows, each in a separate list.
+     */
     private ArrayList<ArrayList<BasicEnemy>> generateAliens() {
         // Spacing calc
         Alien alien = new Alien(0,0);
@@ -205,6 +298,13 @@ public class SpaceInvadersGame extends BasicGame {
         return aliens;
     }
 
+    /**
+     * This method generates a new alien row for the alien cluster.
+     * @param rowIndex The index of the row to generate.
+     * @param aliensPerRow The number of aliens per row.
+     * @param alienSpacing The spacing between aliens in pixels.
+     * @return Returns a new List containing a single row of aliens.
+     */
     private ArrayList<BasicEnemy> generateAlienRow(int rowIndex, int aliensPerRow, float alienSpacing) {
         Alien alien = new Alien(0,0);
         float alienWidth = alien.getWidth();
@@ -219,6 +319,9 @@ public class SpaceInvadersGame extends BasicGame {
         return row;
     }
 
+    /**
+     * This method clears all the projectiles who have left the visible play area.
+     */
     private void clearOffScreenProjectiles() {
         ArrayList<Projectile> remove = new ArrayList<Projectile>();
         for (Projectile p : projectiles) {
@@ -236,6 +339,9 @@ public class SpaceInvadersGame extends BasicGame {
         enemyProjectiles.removeAll(remove);
     }
 
+    /**
+     * This method removes the aliens who have left the visible play area.
+     */
     private void clearOffScreenAliens() {
         ArrayList<BasicEnemy> remove;
         for (ArrayList<BasicEnemy> row : enemies) {
@@ -248,6 +354,10 @@ public class SpaceInvadersGame extends BasicGame {
         }
     }
 
+    /**
+     * This method checks for collisions between the player projectiles and enemies and will damage or remove the enemy
+     * and the projectile accordingly.
+     */
     private void checkForEnemyHits() {
         ArrayList<BasicEnemy> enemiesToRemove;
         ArrayList<Projectile> projectilesToRemove = new ArrayList<Projectile>();
@@ -286,6 +396,10 @@ public class SpaceInvadersGame extends BasicGame {
         }
     }
 
+    /**
+     * This method checks for collisions between player ship, enemy projectiles and enemies itself, and if a collision
+     * is detected will damage or remove the objects accordingly.
+     */
     private void checkForPlayerHits() {
         ArrayList<Projectile> projectilesToRemove = new ArrayList<Projectile>();
         for (Projectile p : enemyProjectiles) {
@@ -299,6 +413,9 @@ public class SpaceInvadersGame extends BasicGame {
         enemyProjectiles.removeAll(projectilesToRemove);
     }
 
+    /**
+     * This method is used to generate the enemy attack pattern and to dispatch the projectiles accordingly.
+     */
     private void enemyAttacks() {
         Random rand = new Random();
         for (ArrayList<BasicEnemy> row : enemies) {
@@ -313,7 +430,12 @@ public class SpaceInvadersGame extends BasicGame {
         }
     }
 
-    private static Sprite createScaledSprite(Texture texture) {
+    /**
+     * This method scales the wallpaper to make it fit into the current window.
+     * @param texture The wallpaper to scale.
+     * @return The re-scaled wallpaper.
+     */
+    private static Sprite scaleBackground(Texture texture) {
         float SCALE_RATIO = (float) texture.getWidth() / BASE_GAME_WIDTH;
         Sprite sprite = new Sprite(texture);
         sprite.getTexture().setFilter(Texture.TextureFilter.Linear,

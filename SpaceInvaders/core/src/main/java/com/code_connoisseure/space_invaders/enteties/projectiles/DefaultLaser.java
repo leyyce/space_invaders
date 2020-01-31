@@ -49,6 +49,9 @@ public class DefaultLaser extends Projectile {
         super(spriteSheet, x, y, sheetFrameWidth, sheetFrameHeight, animationDuration, speed, moveDirection, fireSound);
     }
 
+    /**
+     * @return Returns the height of a single animation frame on the sprite sheet in pixels
+     */
     public static int getSheetFrameHeight_() {
         return sheetFrameHeight;
     }
