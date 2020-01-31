@@ -27,3 +27,12 @@ Die Dateien zur SCRUM-Dokumentation sind in dem Ordner [SCRUMdocs](https://gitla
 
 ## Bauanleitung
 Die neueste Releaseversion [hier](https://gitlab.cs.hs-fulda.de/fdai6386/space_invaders/raw/master/builds/SpaceInvaders_v0.0.2_1.zip) herunterladen, entpacken und per Doppelklick auf die SpaceInvaders.exe ausführen.
+
+
+> Hinweis: Damit das Spiel starten kann muss JAVA_HOME in den Systemumgebungsvariablen richtig gesetzt sein. 
+> Hierfür müssen folgende Schritte befolgt werden:  
+> 1.  Über die Windowssuchfunktion nach "Die Systemumgebungsvariablen bearbeiten" suchen und öffnen
+> 2.  Auf den Button "Umgebungsvariablen" klicken
+> 3.  Unter "Systemvariablen" auf den Button "Neu" klicken.
+> 4.  Den Variablennamen auf JAVA_HOME, und den Wert auf den entprechenden Ordnerpfad (z.B. C:\Programme\Java\jdk-9.0.4) setzen.
+> 5.  Die Eingabe mit "OK" bestätigen.
