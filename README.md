@@ -3,7 +3,7 @@
 ## Projektdateien
 Dieses Projekt wurde mit dem mini2Dx-Projektgenerator erstellt weshalb wir nur
 bedingt einfluss auf dessen Struktur nehmen konnten. Das Projekt befindet sich
-in dem Unterodner [SpaceInvaders](https://gitlab.cs.hs-fulda.de/fdai6386/space_invadersc /tree/master/SpaceInvaders).
+in dem Unterodner [SpaceInvaders](https://gitlab.cs.hs-fulda.de/fdai6386/space_invaders/tree/master/SpaceInvaders).
 Die meisten der dort befindlichen Dateien wurden automatisch generiert.
 Die Datein welche wir selber geschrieben haben befinden sich in dem Unterverzeichniss
 [SpaceInvaders/core/src/main/java/com/code_connoisseure/space_invaders](https://gitlab.cs.hs-fulda.de/fdai6386/space_invaders/tree/master/SpaceInvaders/core/src/main/java/com/code_connoisseure/space_invaders).
