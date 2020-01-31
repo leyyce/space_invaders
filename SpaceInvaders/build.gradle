@@ -17,7 +17,7 @@ allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
 
-    version = '0.0.1'
+    version = '0.0.2'
     ext {
         appName = 'SpaceInvaders'
         mini2DxVersion = '1.9.10'

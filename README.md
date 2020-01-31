@@ -26,4 +26,4 @@ sowie zu allen Klassen im [projectiles](https://gitlab.cs.hs-fulda.de/fdai6386/s
 Die Dateien zur SCRUM-Dokumentation sind in dem Ordner [SCRUMdocs](https://gitlab.cs.hs-fulda.de/fdai6386/space_invaders/tree/master/SCRUMdocs) hinterlegt.
 
 ## Bauanleitung
-Die neueste Releaseversion [hier]() herunterladen, entpacken und per Doppelklick auf die SpaceInvaders.exe ausführen.
+Die neueste Releaseversion [hier](https://gitlab.cs.hs-fulda.de/fdai6386/space_invaders/raw/master/builds/SpaceInvaders_v0.0.2_1.zip) herunterladen, entpacken und per Doppelklick auf die SpaceInvaders.exe ausführen.
