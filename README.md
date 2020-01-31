@@ -36,3 +36,20 @@ Die neueste Releaseversion [hier](https://gitlab.cs.hs-fulda.de/fdai6386/space_i
 > 3.  Unter "Systemvariablen" auf den Button "Neu" klicken.
 > 4.  Den Variablennamen auf JAVA_HOME, und den Wert auf den entprechenden Ordnerpfad (z.B. C:\Programme\Java\jdk-9.0.4) setzen.
 > 5.  Die Eingabe mit "OK" bestätigen.
+
+## Spielanleitung
+Die Steuerung für unser Spiel lautet wie folgt:
+
+linke und rechte Pfeitaste = Bewegung des Raumschiffs
+\
+Spacebar = Abfeuern des Lasers
+\
+Escape = 1x Minimieren 2x Spiel schließen
+\
+\
+Ziel ist es die anrückenden Wellen von Aliens mit dem Laser auszuschalten und
+dabei selbst möglichst wenig Schaden zu nehmen. Schaden erhält man, wenn man von
+einer gegnerischen Bombe getroffen wird, oder wenn es eine Kollision zwischen 
+Spieler und Alien gibt. Der Spieler hat 3 Leben. Der Punktezähler erhöht sich
+mit jedem besiegten Alien und mindert sich bei
+Fehlschüssen und erlittenem Schaden!
